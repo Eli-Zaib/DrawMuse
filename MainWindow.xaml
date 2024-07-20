@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DrawMuse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="1080" Width="1920">
+    <Window.Resources>
+        <SolidColorBrush x:Key="upperBarColor" Color="#523131" Opacity="0.26"/>
+        <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.35" />
+    </Window.Resources>
     <Grid>
-        
+        <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
+        <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
     </Grid>
 </Window>
