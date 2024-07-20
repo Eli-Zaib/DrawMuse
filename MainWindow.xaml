@@ -13,5 +13,11 @@
     <Grid>
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
         <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
+        <Image Source="Icons/paint-brush.png" Width="32" Height="32" Margin="0,0,1820,960"/>
+        <Image Source="Icons/palette.png" Width="32" Height="32" Margin="0,0,1620,960" />
+        <Image Source="Icons/fill.png" Width="32" Height="32" Margin="0,0,1520,960"/>
+        <Image Source="Icons/eye-dropper.png" Width="32" Height="32" Margin="0,0,1420,960"/>
+        <Image Source="Icons/eraser.png" Width="32" Height="32" Margin="0,0,1720,960" />
+        <Image Source="Icons/slash.png" Width="32" Height="32" Margin="0,0,1320,960"/>
     </Grid>
 </Window>
