@@ -18,11 +18,22 @@ namespace DrawMuse
    
     public partial class MainWindow : Window
     {
+        private IDrawingTools drawingTools;
         public MainWindow()
         {
             InitializeComponent();
+            drawingTools = new DrawingTools(drawingCanvas);
+            
+        }
+
+        private void DrawButton_Click(object sender, RoutedEventArgs e)
+        {
+            drawingTools.Pencil();
         }
     }
+
+    
+
     interface IDrawingTools
     {
         void Pencil();
