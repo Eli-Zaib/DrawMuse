@@ -109,5 +109,11 @@
   <ItemGroup>
     <Resource Include="Icons\slash.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\undo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\redo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

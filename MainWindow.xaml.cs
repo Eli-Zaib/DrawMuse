@@ -13,23 +13,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace DrawMuse
 {
    
     public partial class MainWindow : Window
     {
         private IDrawingTools drawingTools;
+    
         public MainWindow()
         {
             InitializeComponent();
             drawingTools = new DrawingTools(drawingCanvas);
-            
+          
         }
 
         private void DrawButton_Click(object sender, RoutedEventArgs e)
         {
             drawingTools.Pencil();
         }
+
     }
 
     
@@ -73,9 +76,9 @@ namespace DrawMuse
     }
 
 
-    interface IFunctions
+    interface IEraserTool
     {
-        void Eraser();
+        void Eraser(Point position, double size);
     }
 
 
