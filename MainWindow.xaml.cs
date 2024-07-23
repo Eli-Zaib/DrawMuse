@@ -20,6 +20,7 @@ namespace DrawMuse
     public partial class MainWindow : Window
     {
         private IDrawingTools drawingTools;
+        private bool isDrawing;
     
         public MainWindow()
         {
@@ -30,7 +31,22 @@ namespace DrawMuse
 
         private void DrawButton_Click(object sender, RoutedEventArgs e)
         {
-            drawingTools.Pencil();
+            isDrawing = !isDrawing;
+
+
+            if (isDrawing)
+            {
+                drawButton.Background = Brushes.LightGreen;
+                drawingTools.Pencil();
+
+            }
+            else
+            {
+                drawButton.Background = Brushes.Transparent;
+                drawingTools.RemovePencil();
+            }
+
+            
         }
 
     }
@@ -40,6 +56,8 @@ namespace DrawMuse
     interface IDrawingTools
     {
         void Pencil();
+
+        void RemovePencil();
         void Brush();
         void DifferentBrushes(); // Different types of brushes, to be defined later
     }

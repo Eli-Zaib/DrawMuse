@@ -28,6 +28,13 @@ namespace DrawMuse
             drawingCanvas.MouseUp += Canvas_MouseUp;
         }
 
+        public void RemovePencil()
+        {
+            drawingCanvas.MouseDown -= Canvas_MouseDown;
+            drawingCanvas.MouseMove -= Canvas_MouseMove;
+            drawingCanvas.MouseUp -= Canvas_MouseUp;
+        }
+
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             isDrawing = true;
