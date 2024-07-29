@@ -11,9 +11,12 @@
         <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.35" />
     </Window.Resources>
     <Grid>
-        <Canvas Name="drawingCanvas" Background="White" Width="1800" Margin="105,109,15,5" />
-   
-        
+        <Canvas Name="drawingCanvas" Background="White" Width="1800" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
+
+        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,100" >
+        </UniformGrid>
+
+
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
         <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
 

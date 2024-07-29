@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ColorManager.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="ShapesTools.cs" />
     <Compile Include="Undo_Redo.cs" />

@@ -65,9 +65,12 @@ namespace DrawMuse
     }
 
 
-    interface IColorTools
+    interface IColorManager
     {
-        void ColorPalette();
+
+        void CreateColorPalette(Panel palletPanel);
+        void OnColorSelected(object sender, System.Windows.Input.MouseButtonEventArgs e);
+        void OnCanvasClicked(object sender , System.Windows.Input.MouseButtonEventArgs e, Canvas drawingCanvas);
         void ColorPicker();
         void ColorBucket();
     }

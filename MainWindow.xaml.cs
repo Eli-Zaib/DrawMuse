@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace DrawMuse
 {
-   
+
     public partial class MainWindow : Window
     {
         // <-- Drawing pencil logic Starts! here -->
@@ -26,18 +26,26 @@ namespace DrawMuse
 
         // <-- Drawing pencil logic Ends! here -->
 
+        private IColorManager colorManager;
 
         public MainWindow()
         {
             InitializeComponent();
 
-         
             drawingTools = new DrawingTools(drawingCanvas); // <<< Pencil Logic
-         
+
+            colorManager = new ColorManager();  // <<< ColorManager Logic
+            colorManager.CreateColorPalette(ColorPalette); // <<< ColorManager Logic
 
         }
 
-      
+        private void DrawingCanvas_MouseLeftButtonDown(object sender , MouseButtonEventArgs e)   // <<< ColorManager Logic Starts! here
+        {
+            colorManager.OnCanvasClicked(sender , e, drawingCanvas);
+        }
+        // <<< ColorManager Logic Ends! here
+
+
 
         private void DrawButton_Click(object sender, RoutedEventArgs e)     // <-- Drawing pencil logic Starts! here -->
         {
