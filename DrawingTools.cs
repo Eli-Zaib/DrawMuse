@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +10,9 @@ namespace DrawMuse
 {
     public class DrawingTools : IDrawingTools
     {
+        private Stack<IUndoRedo> undoStack = new Stack<IUndoRedo>();
+        private Stack<IUndoRedo> redoStack = new Stack<IUndoRedo>();
+
         private bool isDrawing = false;
         private Point previousPoint;
         private Canvas drawingCanvas;
@@ -21,6 +21,7 @@ namespace DrawMuse
         {
             drawingCanvas = canvas;
         }
+
         public void Pencil()
         {
             drawingCanvas.MouseDown += Canvas_MouseDown;
@@ -46,18 +47,35 @@ namespace DrawMuse
             if (isDrawing && e.LeftButton == MouseButtonState.Pressed)
             {
                 Point currentPoint = e.GetPosition(drawingCanvas);
-                Line line = new Line
-                {
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2,
-                    X1 = previousPoint.X,
-                    Y1 = previousPoint.Y,
-                    X2 = currentPoint.X,
-                    Y2 = currentPoint.Y
 
-                };
-                previousPoint = currentPoint;
-                drawingCanvas.Children.Add(line);
+                // Create a new line only if it is not the first move
+                if (previousPoint != currentPoint)
+                {
+                    Line line = new Line
+                    {
+                        Stroke = Brushes.Black,
+                        StrokeThickness = 2,
+                        X1 = previousPoint.X,
+                        Y1 = previousPoint.Y,
+                        X2 = currentPoint.X,
+                        Y2 = currentPoint.Y
+                    };
+
+                    // Create an action for the undo/redo functionality
+                    Undo_Redo action = new Undo_Redo(previousPoint, currentPoint, line);
+
+                    // Execute the action (draw the line)
+                    action.Execute(drawingCanvas);
+
+                    // Push the action to the undo stack
+                    undoStack.Push(action);
+                    redoStack.Clear(); // Clear the redo stack
+
+                    // Update the previous point to the current point
+                    previousPoint = currentPoint;
+
+                    
+                }
             }
         }
 
@@ -66,14 +84,34 @@ namespace DrawMuse
             isDrawing = false;
         }
 
+        public void Undo()
+        {
+            if (undoStack.Count > 0)
+            {
+                IUndoRedo lastAction = undoStack.Pop();
+                lastAction.Undo(drawingCanvas);
+                redoStack.Push(lastAction);
+            }
+        }
+
+        public void Redo()
+        {
+            if (redoStack.Count > 0)
+            {
+                IUndoRedo lastAction = redoStack.Pop();
+                lastAction.Redo(drawingCanvas);
+                undoStack.Push(lastAction);
+            }
+        }
+
         public void Brush()
         {
-
+            // Implement Brush functionality
         }
 
         public void DifferentBrushes()
         {
-
+            // Implement DifferentBrushes functionality
         }
     }
 }

@@ -11,7 +11,7 @@
         <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.35" />
     </Window.Resources>
     <Grid>
-        <Canvas Name="drawingCanvas" Background="White" Width="1800" Margin="105,109,15,5"/>
+        <Canvas Name="drawingCanvas" Background="White" Width="1800" Margin="105,109,15,5" />
    
         
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
@@ -27,19 +27,23 @@
             <Image Source="Icons/eraser.png" Width="32" Height="32" />
         </Button>
 
-        <Button x:Name="undoButton" Width="35" Height="36" Margin="1520,0,0,960" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="undoButton" Click ="UndoButton_Click" Width="35" Height="36" Margin="1520,0,0,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/undo.png" Width="32" Height="32" />
         </Button>
 
-        <Button x:Name="redoButton" Width="35" Height="36" Margin="1620,0,0,960" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="redoButton" Click="RedoButton_Click" Width="35" Height="36" Margin="1620,0,0,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/redo.png" Width="32" Height="32" />
+        </Button>
+
+        <Button x:Name="DrawLine" Width="35" Height="36" Margin="0,0,1320,960" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="Icons/slash.png" Width="32" Height="32" />
         </Button>
 
         <Image Source="Icons/palette.png" Width="32" Height="32" Margin="0,0,1620,960" />
         <Image Source="Icons/fill.png" Width="32" Height="32" Margin="0,0,1520,960"/>
         <Image Source="Icons/eye-dropper.png" Width="32" Height="32" Margin="0,0,1420,960"/>
    
-        <Image Source="Icons/slash.png" Width="32" Height="32" Margin="0,0,1320,960"/>
+     
       
       
 
