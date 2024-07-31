@@ -13,6 +13,12 @@ namespace DrawMuse
     internal class ColorManager : IColorManager
     {
         private SolidColorBrush currentBrush;
+        private IDrawingTools drawingTools;
+
+        public ColorManager(IDrawingTools drawingTools)
+        {
+            this.drawingTools = drawingTools;
+        }
         public void CreateColorPalette(Panel palletPanel)
         {
             Color[] colors = new Color[]
@@ -32,6 +38,7 @@ namespace DrawMuse
                 };
                 rectangle.MouseLeftButtonDown += OnColorSelected;
                 palletPanel.Children.Add(rectangle);
+               
             }
         }
         public void OnColorSelected(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -40,25 +47,11 @@ namespace DrawMuse
             if(rectangle != null)
             {
                 currentBrush = rectangle.Fill as SolidColorBrush;
+                drawingTools.SetBrush(currentBrush);
             }
         }
 
-        public void OnCanvasClicked(object sender, System.Windows.Input.MouseButtonEventArgs e, Canvas drawingCanvas)
-        {
-            if(currentBrush != null)
-            {
-                Ellipse ellipse = new Ellipse
-                { 
-                   Width = 10,
-                   Height = 10,
-                   Fill = currentBrush
-                
-                };
-                Canvas.SetLeft(ellipse, e.GetPosition(drawingCanvas).X);
-                Canvas.SetTop(ellipse , e.GetPosition(drawingCanvas).Y);
-                drawingCanvas.Children.Add(ellipse);
-            }
-        }
+      
         public void ColorPicker()
         {
 

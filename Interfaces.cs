@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace DrawMuse
 {
@@ -17,7 +18,7 @@ namespace DrawMuse
     interface IDrawingTools
     {
         void Pencil();
-
+        void SetBrush(SolidColorBrush brush);
         void RemovePencil();
         void Brush();
         void DifferentBrushes(); // Different types of brushes, to be defined later
@@ -70,7 +71,7 @@ namespace DrawMuse
 
         void CreateColorPalette(Panel palletPanel);
         void OnColorSelected(object sender, System.Windows.Input.MouseButtonEventArgs e);
-        void OnCanvasClicked(object sender , System.Windows.Input.MouseButtonEventArgs e, Canvas drawingCanvas);
+      
         void ColorPicker();
         void ColorBucket();
     }

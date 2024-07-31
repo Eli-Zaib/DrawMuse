@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,10 +14,11 @@ namespace DrawMuse
         private Stack<IUndoRedo> undoStack = new Stack<IUndoRedo>();
         private Stack<IUndoRedo> redoStack = new Stack<IUndoRedo>();
 
-        private bool isDrawing = false;
+        private bool isDrawing;
         private Point previousPoint;
         private Canvas drawingCanvas;
-
+        private SolidColorBrush currentBrush = Brushes.Black;
+        private List<Line> currentStroke;
         public DrawingTools(Canvas canvas)
         {
             drawingCanvas = canvas;
@@ -40,6 +42,8 @@ namespace DrawMuse
         {
             isDrawing = true;
             previousPoint = e.GetPosition(drawingCanvas);
+
+            currentStroke  = new List<Line>();
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -48,30 +52,21 @@ namespace DrawMuse
             {
                 Point currentPoint = e.GetPosition(drawingCanvas);
 
-                // Create a new line only if it is not the first move
+             
                 if (previousPoint != currentPoint)
                 {
                     Line line = new Line
                     {
-                        Stroke = Brushes.Black,
+                        Stroke = currentBrush,
                         StrokeThickness = 2,
                         X1 = previousPoint.X,
                         Y1 = previousPoint.Y,
                         X2 = currentPoint.X,
                         Y2 = currentPoint.Y
                     };
-
-                    // Create an action for the undo/redo functionality
-                    Undo_Redo action = new Undo_Redo(previousPoint, currentPoint, line);
-
-                    // Execute the action (draw the line)
-                    action.Execute(drawingCanvas);
-
-                    // Push the action to the undo stack
-                    undoStack.Push(action);
-                    redoStack.Clear(); // Clear the redo stack
-
-                    // Update the previous point to the current point
+                    
+                    drawingCanvas.Children.Add(line);
+                    currentStroke.Add(line);
                     previousPoint = currentPoint;
 
                     
@@ -81,9 +76,24 @@ namespace DrawMuse
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            isDrawing = false;
+            if(isDrawing)
+            {
+                isDrawing = false;
+
+                if(currentStroke.Count > 0)
+                {
+                    undoStack.Push(new Undo_Redo(currentStroke));
+                    redoStack.Clear();
+                }
+            }
+          
         }
 
+        public void SetBrush(SolidColorBrush brush)
+        {
+            currentBrush = brush;
+          
+        }
         public void Undo()
         {
             if (undoStack.Count > 0)
@@ -104,6 +114,7 @@ namespace DrawMuse
             }
         }
 
+     
         public void Brush()
         {
             // Implement Brush functionality

@@ -14,21 +14,22 @@ namespace DrawMuse
       
         private Point startPoint;
         private Point endPoint;
-        private Line line;
-
-        public Undo_Redo(Point startPoint, Point endPoint, Line line)
+        private List<Line> lines;
+        public Undo_Redo(List<Line> lines)
         {
-            this.startPoint = startPoint;
-            this.endPoint = endPoint;
-            this.line = line;
+            this.lines = lines;   
         }
         public void Execute(Canvas canvas)
         {
-            canvas.Children.Add(line);
+            foreach(var line in lines)
+            {
+                canvas.Children.Add(line);
+            }
+           
         }
         public void Undo(Canvas canvas)
         {
-            if(canvas.Children.Contains(line))
+            foreach(var line in lines)
             {
                 canvas.Children.Remove(line);
             }
@@ -37,10 +38,7 @@ namespace DrawMuse
 
         public void Redo(Canvas canvas)
         {
-            if(!canvas.Children.Contains(line))
-            {
-                canvas.Children.Add(line);
-            }
+           Execute(canvas);
           
         }
     }

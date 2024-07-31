@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:DrawMuse"
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920">
@@ -11,9 +12,10 @@
         <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.35" />
     </Window.Resources>
     <Grid>
+
         <Canvas Name="drawingCanvas" Background="White" Width="1800" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
 
-        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,100" >
+        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,100" >
         </UniformGrid>
 
 
@@ -42,6 +44,11 @@
             <Image Source="Icons/slash.png" Width="32" Height="32" />
         </Button>
 
+        <xctk:ColorPicker x:Name="ColorPickerControl" 
+                          SelectedColorChanged="ColorPickerControl_SelectedColorChanged"
+                          HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,200,0,0" Width="150" Height="150" />
+
+      
         <Image Source="Icons/palette.png" Width="32" Height="32" Margin="0,0,1620,960" />
         <Image Source="Icons/fill.png" Width="32" Height="32" Margin="0,0,1520,960"/>
         <Image Source="Icons/eye-dropper.png" Width="32" Height="32" Margin="0,0,1420,960"/>

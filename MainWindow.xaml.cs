@@ -19,29 +19,25 @@ namespace DrawMuse
 
     public partial class MainWindow : Window
     {
-        // <-- Drawing pencil logic Starts! here -->
+      
 
         private IDrawingTools drawingTools;
         private bool isDrawing;
-
-        // <-- Drawing pencil logic Ends! here -->
-
         private IColorManager colorManager;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            drawingTools = new DrawingTools(drawingCanvas); // <<< Pencil Logic
-
-            colorManager = new ColorManager();  // <<< ColorManager Logic
-            colorManager.CreateColorPalette(ColorPalette); // <<< ColorManager Logic
+            drawingTools = new DrawingTools(drawingCanvas);
+            colorManager = new ColorManager(drawingTools); 
+            colorManager.CreateColorPalette(ColorPalette);
 
         }
 
         private void DrawingCanvas_MouseLeftButtonDown(object sender , MouseButtonEventArgs e)   // <<< ColorManager Logic Starts! here
         {
-            colorManager.OnCanvasClicked(sender , e, drawingCanvas);
+           
         }
         // <<< ColorManager Logic Ends! here
 
@@ -54,14 +50,16 @@ namespace DrawMuse
 
             if (isDrawing)
             {
-                drawButton.Background = Brushes.LightGreen;
+             
                 drawingTools.Pencil();
+                drawButton.Background = Brushes.LightGreen;
 
             }
             else
             {
-                drawButton.Background = Brushes.Transparent;
+               
                 drawingTools.RemovePencil();
+                drawButton.Background = Brushes.Transparent;
             }
 
 
@@ -76,6 +74,16 @@ namespace DrawMuse
         public void RedoButton_Click(object sender , RoutedEventArgs e)
         {
             drawingTools.Redo();
+        }
+
+    
+        public void ColorPickerControl_SelectedColorChanged(object sender , RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            if(e.NewValue.HasValue)
+            {
+                SolidColorBrush brush = new SolidColorBrush(e.NewValue.Value);
+                drawingTools.SetBrush(brush);
+            }
         }
     }
 
