@@ -50,7 +50,7 @@ namespace DrawMuse
 
             if (isDrawing)
             {
-             
+               
                 drawingTools.Pencil();
                 drawButton.Background = Brushes.LightGreen;
 
@@ -76,7 +76,10 @@ namespace DrawMuse
             drawingTools.Redo();
         }
 
-    
+        public void ColorPickerButton_Click(object sender , RoutedEventArgs e)
+        {
+            ColorPickerControl.IsOpen = true;
+        }
         public void ColorPickerControl_SelectedColorChanged(object sender , RoutedPropertyChangedEventArgs<Color?> e)
         {
             if(e.NewValue.HasValue)

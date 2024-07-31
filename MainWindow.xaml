@@ -46,10 +46,13 @@
 
         <xctk:ColorPicker x:Name="ColorPickerControl" 
                           SelectedColorChanged="ColorPickerControl_SelectedColorChanged"
-                          HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,200,0,0" Width="150" Height="150" />
+                          HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,200,0,0" Width="150" Height="150" Visibility="Hidden"/>
 
-      
-        <Image Source="Icons/palette.png" Width="32" Height="32" Margin="0,0,1620,960" />
+        <Button x:Name="colorPickerButton" Click="ColorPickerButton_Click" Width="35" Height="36" Margin="0,0,1620,960" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="Icons/palette.png" Width="32" Height="32" />
+        </Button>
+
+     
         <Image Source="Icons/fill.png" Width="32" Height="32" Margin="0,0,1520,960"/>
         <Image Source="Icons/eye-dropper.png" Width="32" Height="32" Margin="0,0,1420,960"/>
    
