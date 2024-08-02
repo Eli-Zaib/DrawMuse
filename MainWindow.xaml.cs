@@ -24,23 +24,41 @@ namespace DrawMuse
         private IDrawingTools drawingTools;
         private bool isDrawing;
         private IColorManager colorManager;
+        private bool isColorBucket;
 
         public MainWindow()
         {
             InitializeComponent();
 
             drawingTools = new DrawingTools(drawingCanvas);
-            colorManager = new ColorManager(drawingTools); 
+            colorManager = new ColorManager(drawingTools , drawingCanvas); 
             colorManager.CreateColorPalette(ColorPalette);
 
         }
 
         private void DrawingCanvas_MouseLeftButtonDown(object sender , MouseButtonEventArgs e)   // <<< ColorManager Logic Starts! here
         {
-           
+            if(isColorBucket)
+            {
+                var point = e.GetPosition(drawingCanvas);
+                colorManager.FillArea(point);
+            }
         }
         // <<< ColorManager Logic Ends! here
 
+        private void ColorBucket_Click(object sender , RoutedEventArgs e)
+        {
+            isColorBucket = !isColorBucket;
+            if(isColorBucket)
+            {
+                colorManager.ActivateBucket();
+                ColorBucket.Background = Brushes.LightBlue;
+            }
+            else
+            {
+                ColorBucket.Background = Brushes.Transparent;
+            }
+        }
 
 
         private void DrawButton_Click(object sender, RoutedEventArgs e)     // <-- Drawing pencil logic Starts! here -->
@@ -52,7 +70,8 @@ namespace DrawMuse
             {
                
                 drawingTools.Pencil();
-                drawButton.Background = Brushes.LightGreen;
+                drawButton.Background = Brushes.LightBlue;
+               
 
             }
             else
@@ -84,8 +103,11 @@ namespace DrawMuse
         {
             if(e.NewValue.HasValue)
             {
+                Color selectedColor = e.NewValue.Value;
                 SolidColorBrush brush = new SolidColorBrush(e.NewValue.Value);
                 drawingTools.SetBrush(brush);
+
+                colorManager.UpdateBucketColor(selectedColor);
             }
         }
     }

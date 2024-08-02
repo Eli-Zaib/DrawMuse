@@ -8,25 +8,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
-        <SolidColorBrush x:Key="upperBarColor" Color="#523131" Opacity="0.26"/>
-        <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.35" />
+        <SolidColorBrush x:Key="upperBarColor" Color="#523131" Opacity="0.16"/>
+        <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.16" />
     </Window.Resources>
     <Grid>
 
-        <Canvas Name="drawingCanvas" Background="White" Width="1800" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
-
-        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,100" >
-        </UniformGrid>
+        <Canvas Name="drawingCanvas" Background="White" Width="1900" Height="1000" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
 
 
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
         <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
 
+        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,100" >
+        </UniformGrid>
+
         <Button x:Name="drawButton" Width="35" Height="36" Margin="0,0,1820,960" Click="DrawButton_Click" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/paint-brush.png" Width="32" Height="32"/>
         </Button>
-
-     
 
         <Button x:Name="EraserButton" Width="35" Height="36" Margin="0,0,1720,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/eraser.png" Width="32" Height="32" />
@@ -52,9 +50,14 @@
             <Image Source="Icons/palette.png" Width="32" Height="32" />
         </Button>
 
-     
-        <Image Source="Icons/fill.png" Width="32" Height="32" Margin="0,0,1520,960"/>
-        <Image Source="Icons/eye-dropper.png" Width="32" Height="32" Margin="0,0,1420,960"/>
+        <Button x:Name="ColorBucket" Click="ColorBucket_Click" Width="35" Height="36" Margin="0,0,1520,960" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="Icons/fill.png" Width="32" Height="32" />
+        </Button>
+
+        <Button x:Name="EyeDropper" Width="35" Height="36" Margin="0,0,1420,960" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="Icons/eye-dropper.png" Width="32" Height="32" />
+        </Button>
+   
    
      
       

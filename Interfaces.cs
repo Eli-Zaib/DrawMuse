@@ -22,7 +22,6 @@ namespace DrawMuse
         void RemovePencil();
         void Brush();
         void DifferentBrushes(); // Different types of brushes, to be defined later
-
         void Undo();
         void Redo();
     }
@@ -71,9 +70,10 @@ namespace DrawMuse
 
         void CreateColorPalette(Panel palletPanel);
         void OnColorSelected(object sender, System.Windows.Input.MouseButtonEventArgs e);
-      
-        void ColorPicker();
-        void ColorBucket();
+        void SelectedColor(Color color);
+        void UpdateBucketColor(Color color);
+        void FillArea(Point point);
+        void ActivateBucket();
     }
 
 
