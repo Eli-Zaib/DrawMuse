@@ -17,7 +17,7 @@ namespace DrawMuse
 
     interface IDrawingTools
     {
-        void Pencil();
+        void Pencil();    
         void SetBrush(SolidColorBrush brush);
         void RemovePencil();
         void Brush();
@@ -74,6 +74,10 @@ namespace DrawMuse
         void UpdateBucketColor(Color color);
         void FillArea(Point point);
         void ActivateBucket();
+        void Undo();
+        void Redo();
+
+
     }
 
 

@@ -13,7 +13,7 @@
     </Window.Resources>
     <Grid>
 
-        <Canvas Name="drawingCanvas" Background="White" Width="1900" Height="1000" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
+        <Canvas Name="drawingCanvas" Background="White" Width="1800" Height="950" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
 
 
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />

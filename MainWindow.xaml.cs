@@ -87,12 +87,14 @@ namespace DrawMuse
         public void UndoButton_Click(object sender , RoutedEventArgs e)
         {
             drawingTools.Undo();
+            colorManager.Undo();
           
         }
 
         public void RedoButton_Click(object sender , RoutedEventArgs e)
         {
             drawingTools.Redo();
+            colorManager.Redo();
         }
 
         public void ColorPickerButton_Click(object sender , RoutedEventArgs e)

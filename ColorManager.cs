@@ -20,6 +20,10 @@ namespace DrawMuse
         private WriteableBitmap bitmap;
         private byte[] pixelBuffer;
         private bool isBucketToolActive;
+
+        private Stack<byte[]> undoStack;
+        private Stack<byte[]> redoStack;
+
         public ColorManager(IDrawingTools drawingTools, Canvas canvas)
         {
             this.drawingTools = drawingTools;
@@ -34,6 +38,9 @@ namespace DrawMuse
 
             Image image = new Image { Source = bitmap };
             drawingCanvas.Children.Add(image);
+
+            undoStack = new Stack<byte[]>();
+            redoStack = new Stack<byte[]>();
 
         }
         public void CreateColorPalette(Panel palletPanel)
@@ -98,6 +105,8 @@ namespace DrawMuse
                 MessageBox.Show("Select a color first!");
                 return;
             }
+
+            SaveStateForUndo();
 
             int x = (int)point.X;
             int y = (int)point.Y;
@@ -176,6 +185,45 @@ namespace DrawMuse
         private void UpdateBitmap()
         {
             bitmap.WritePixels(new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), pixelBuffer, bitmap.PixelWidth * 4, 0);
+        }
+
+        private void SaveStateForUndo()
+        {
+            byte[] currentState = new byte[pixelBuffer.Length];
+            Array.Copy(pixelBuffer, currentState, pixelBuffer.Length);
+            undoStack.Push(currentState);
+            redoStack.Clear();
+        }
+
+        public void Undo()
+        {
+            if (undoStack.Count > 0)
+            {
+                byte[] previousState = undoStack.Pop();
+                byte[] currentState = new byte[pixelBuffer.Length];
+                Array.Copy(pixelBuffer, currentState, pixelBuffer.Length);
+                redoStack.Push(currentState);
+
+                Array.Copy(previousState, pixelBuffer, pixelBuffer.Length);
+                UpdateBitmap();
+
+            }
+         
+        }
+
+        public void Redo()
+        {
+            if (redoStack.Count > 0)
+            {
+                byte[] nextState = redoStack.Pop();
+                byte[] currentState = new byte[pixelBuffer.Length];
+                Array.Copy(pixelBuffer, currentState, pixelBuffer.Length);
+                undoStack.Push(currentState);
+
+                Array.Copy(nextState, pixelBuffer, pixelBuffer.Length);
+                UpdateBitmap();
+            }
+          
         }
     }
 }
