@@ -92,7 +92,6 @@ namespace DrawMuse
         public void SetBrush(SolidColorBrush brush)
         {
             currentBrush = brush;
-          
         }
         public void Undo()
         {

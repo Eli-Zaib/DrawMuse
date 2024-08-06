@@ -11,11 +11,11 @@
         <SolidColorBrush x:Key="upperBarColor" Color="#523131" Opacity="0.16"/>
         <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.16" />
     </Window.Resources>
-    <Grid>
+    <Grid >
 
-        <Canvas Name="drawingCanvas" Background="White" Width="1800" Height="950" Margin="105,109,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
-
-
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="100,100,0,0">
+            <Canvas Name="drawingCanvas" Background="White" Width="1920" Height="1080" Margin="0,0,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" />
+        </ScrollViewer>
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
         <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
 
@@ -54,7 +54,7 @@
             <Image Source="Icons/fill.png" Width="32" Height="32" />
         </Button>
 
-        <Button x:Name="EyeDropper" Width="35" Height="36" Margin="0,0,1420,960" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="EyeDropper" Width="35" Click="EyedropperButton_Click" Height="36" Margin="0,0,1420,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/eye-dropper.png" Width="32" Height="32" />
         </Button>
    

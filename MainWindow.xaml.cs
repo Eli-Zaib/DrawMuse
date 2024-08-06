@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
+
 namespace DrawMuse
 {
 
@@ -22,36 +23,65 @@ namespace DrawMuse
       
 
         private IDrawingTools drawingTools;
-        private bool isDrawing;
         private IColorManager colorManager;
+        private ColorTools colorTools;
+        private ColorBucket colorBucket;
         private bool isColorBucket;
-
+        private bool isDrawing;
+        private bool isEyeDropper;
         public MainWindow()
         {
             InitializeComponent();
 
             drawingTools = new DrawingTools(drawingCanvas);
-            colorManager = new ColorManager(drawingTools , drawingCanvas); 
+            colorManager = new ColorManager(drawingTools , drawingCanvas);
+            colorBucket = new ColorBucket(drawingCanvas);
             colorManager.CreateColorPalette(ColorPalette);
+            colorTools = new ColorTools(drawingTools , EyeDropper);
+            colorTools.ColorSelected += OnColorSelected;
 
         }
 
-        private void DrawingCanvas_MouseLeftButtonDown(object sender , MouseButtonEventArgs e)   // <<< ColorManager Logic Starts! here
+        private void OnColorSelected(Color color)
+        {
+            colorBucket.UpdateBucketColor(color);
+            drawingTools.SetBrush(new SolidColorBrush(color));
+        }
+        private void DrawingCanvas_MouseLeftButtonDown(object sender , MouseButtonEventArgs e)  
         {
             if(isColorBucket)
             {
                 var point = e.GetPosition(drawingCanvas);
-                colorManager.FillArea(point);
+                colorBucket.FillArea(point);
             }
         }
-        // <<< ColorManager Logic Ends! here
 
+     
+
+        private void EyedropperButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            isEyeDropper = !isEyeDropper;
+            if (isEyeDropper)
+            {
+
+                colorTools.UseEyeDropper(drawingCanvas);
+                EyeDropper.Background = Brushes.LightBlue;
+
+            }
+            else
+            {
+                colorTools.DisableEyeDropper(drawingCanvas);
+                EyeDropper.Background = Brushes.Transparent;
+            }
+
+        }
         private void ColorBucket_Click(object sender , RoutedEventArgs e)
         {
             isColorBucket = !isColorBucket;
             if(isColorBucket)
             {
-                colorManager.ActivateBucket();
+                colorBucket.ActivateBucket();
                 ColorBucket.Background = Brushes.LightBlue;
             }
             else
@@ -61,40 +91,33 @@ namespace DrawMuse
         }
 
 
-        private void DrawButton_Click(object sender, RoutedEventArgs e)     // <-- Drawing pencil logic Starts! here -->
+        private void DrawButton_Click(object sender, RoutedEventArgs e)    
         {
             isDrawing = !isDrawing;
-
-
             if (isDrawing)
             {
-               
                 drawingTools.Pencil();
                 drawButton.Background = Brushes.LightBlue;
-               
-
             }
             else
             {
-               
                 drawingTools.RemovePencil();
                 drawButton.Background = Brushes.Transparent;
             }
 
 
-        }       // <-- Drawing pencil logic Ends! here -->
+        }    
 
         public void UndoButton_Click(object sender , RoutedEventArgs e)
         {
             drawingTools.Undo();
-            colorManager.Undo();
-          
+            colorBucket.Undo();
         }
 
         public void RedoButton_Click(object sender , RoutedEventArgs e)
         {
             drawingTools.Redo();
-            colorManager.Redo();
+            colorBucket.Redo();
         }
 
         public void ColorPickerButton_Click(object sender , RoutedEventArgs e)
@@ -109,7 +132,7 @@ namespace DrawMuse
                 SolidColorBrush brush = new SolidColorBrush(e.NewValue.Value);
                 drawingTools.SetBrush(brush);
 
-                colorManager.UpdateBucketColor(selectedColor);
+                colorBucket.UpdateBucketColor(selectedColor);
             }
         }
     }

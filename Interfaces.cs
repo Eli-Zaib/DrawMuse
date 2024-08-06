@@ -71,12 +71,13 @@ namespace DrawMuse
         void CreateColorPalette(Panel palletPanel);
         void OnColorSelected(object sender, System.Windows.Input.MouseButtonEventArgs e);
         void SelectedColor(Color color);
-        void UpdateBucketColor(Color color);
-        void FillArea(Point point);
-        void ActivateBucket();
-        void Undo();
-        void Redo();
 
+    }
+
+    interface IColorTools
+    {
+        void UseEyeDropper(Canvas canvas);
+        void DisableEyeDropper(Canvas canvas);
 
     }
 
