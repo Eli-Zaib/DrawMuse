@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920">
     <Window.Resources>
-        <SolidColorBrush x:Key="upperBarColor" Color="#523131" Opacity="0.16"/>
-        <SolidColorBrush x:Key="sideBarColor" Color="#523131" Opacity="0.16" />
+        <SolidColorBrush x:Key="upperBarColor" Color="#A49191" Opacity="0.16"/>
+        <SolidColorBrush x:Key="sideBarColor" Color="#A49191" Opacity="0.16" />
     </Window.Resources>
     <Grid >
 
