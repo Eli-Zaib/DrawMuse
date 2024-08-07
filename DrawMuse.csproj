@@ -71,12 +71,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CanvasSizeWindow.xaml.cs">
+      <DependentUpon>CanvasSizeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ColorBucket.cs" />
     <Compile Include="ColorManager.cs" />
     <Compile Include="ColorTools.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="ShapesTools.cs" />
     <Compile Include="Undo_Redo.cs" />
+    <Page Include="CanvasSizeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -137,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\canvas.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,7 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:DrawMuse"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920">
+        Title="DrawMuse" Height="1080" Width="1920">
     <Window.Resources>
         <SolidColorBrush x:Key="upperBarColor" Color="#A49191" Opacity="0.16"/>
         <SolidColorBrush x:Key="sideBarColor" Color="#A49191" Opacity="0.16" />
@@ -44,7 +44,7 @@
 
         <xctk:ColorPicker x:Name="ColorPickerControl" 
                           SelectedColorChanged="ColorPickerControl_SelectedColorChanged"
-                          HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,200,0,0" Width="150" Height="150" Visibility="Hidden"/>
+                          Margin="0,0,1620,960" Width="35" Height="36" Visibility="Hidden"/>
 
         <Button x:Name="colorPickerButton" Click="ColorPickerButton_Click" Width="35" Height="36" Margin="0,0,1620,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/palette.png" Width="32" Height="32" />
@@ -57,11 +57,13 @@
         <Button x:Name="EyeDropper" Width="35" Click="EyedropperButton_Click" Height="36" Margin="0,0,1420,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/eye-dropper.png" Width="32" Height="32" />
         </Button>
-   
-   
-     
-      
-      
+
+        <Button x:Name="SetCanvasSize" Width="35" Click="SetCanvasSize_Click" Height="36" Margin="0,0,1220,960" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="Icons/canvas.png"/>
+        </Button>
+
+
+
 
 
     </Grid>

@@ -26,6 +26,7 @@ namespace DrawMuse
         private IColorManager colorManager;
         private ColorTools colorTools;
         private ColorBucket colorBucket;
+        private UndoRedoManager undoRedoManager = new UndoRedoManager();
         private bool isColorBucket;
         private bool isDrawing;
         private bool isEyeDropper;
@@ -40,6 +41,30 @@ namespace DrawMuse
             colorTools = new ColorTools(drawingTools , EyeDropper);
             colorTools.ColorSelected += OnColorSelected;
 
+        }
+
+
+        private void SetCanvasSize_Click(object sender , RoutedEventArgs e)
+        {
+            CanvasSizeWindow sizeWindow = new CanvasSizeWindow();
+            sizeWindow.Owner = this;
+            if (sizeWindow.ShowDialog() == true)
+            {
+                int newWidth = sizeWindow.CanvasWidth;
+                int newHeight = sizeWindow.CanvasHeight;
+
+           
+                int previousWidth = (int)drawingCanvas.Width;
+                int previousHeight = (int)drawingCanvas.Height;
+
+             
+                drawingCanvas.Width = newWidth;
+                drawingCanvas.Height = newHeight;
+
+              
+                var action = new CanvasSizeChangeAction(previousWidth, previousHeight, newWidth, newHeight);
+                undoRedoManager.Do(action);
+            }
         }
 
         private void OnColorSelected(Color color)
@@ -110,12 +135,32 @@ namespace DrawMuse
 
         public void UndoButton_Click(object sender , RoutedEventArgs e)
         {
+            if (undoRedoManager.CanUndo)
+            {
+                var action = undoRedoManager.Undo();
+                if (action != null)
+                {
+                    drawingCanvas.Width = action.PreviousWidth;
+                    drawingCanvas.Height = action.PreviousHeight;
+                }
+            }
+
             drawingTools.Undo();
             colorBucket.Undo();
         }
 
         public void RedoButton_Click(object sender , RoutedEventArgs e)
         {
+            if (undoRedoManager.CanRedo)
+            {
+                var action = undoRedoManager.Redo();
+                if (action != null)
+                {
+                    drawingCanvas.Width = action.NewWidth;
+                    drawingCanvas.Height = action.NewHeight;
+                }
+            }
+
             drawingTools.Redo();
             colorBucket.Redo();
         }
