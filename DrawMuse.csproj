@@ -77,6 +77,7 @@
     <Compile Include="ColorBucket.cs" />
     <Compile Include="ColorManager.cs" />
     <Compile Include="ColorTools.cs" />
+    <Compile Include="EraserTool.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="ShapesTools.cs" />
     <Compile Include="Undo_Redo.cs" />

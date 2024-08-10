@@ -26,10 +26,12 @@ namespace DrawMuse
         private IColorManager colorManager;
         private ColorTools colorTools;
         private ColorBucket colorBucket;
+        private EraserTool eraserTool;
         private UndoRedoManager undoRedoManager = new UndoRedoManager();
         private bool isColorBucket;
         private bool isDrawing;
         private bool isEyeDropper;
+        private bool isEraserActive;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,11 +41,36 @@ namespace DrawMuse
             colorBucket = new ColorBucket(drawingCanvas);
             colorManager.CreateColorPalette(ColorPalette);
             colorTools = new ColorTools(drawingTools , EyeDropper);
+            eraserTool = new EraserTool(drawingCanvas);
             colorTools.ColorSelected += OnColorSelected;
 
         }
 
+        private void EraserButton_Click(object sender , RoutedEventArgs e)
+        {
+            isEraserActive = !isEraserActive;
+        }
 
+        private void Canvas_MouseMove(object sender , MouseEventArgs e)
+        {
+            if(isEraserActive)
+            {
+                EraserButton.Background = Brushes.LightBlue;
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    Point position = e.GetPosition(drawingCanvas);
+
+                    double eraserSize = 20;
+                    eraserTool.Erase(position, eraserSize);
+
+
+                }
+            }
+            else
+            {
+                EraserButton.Background = Brushes.Transparent;
+            }
+        }
         private void SetCanvasSize_Click(object sender , RoutedEventArgs e)
         {
             CanvasSizeWindow sizeWindow = new CanvasSizeWindow();
@@ -147,6 +174,7 @@ namespace DrawMuse
 
             drawingTools.Undo();
             colorBucket.Undo();
+            eraserTool.Undo();
         }
 
         public void RedoButton_Click(object sender , RoutedEventArgs e)
@@ -163,6 +191,8 @@ namespace DrawMuse
 
             drawingTools.Redo();
             colorBucket.Redo();
+            eraserTool.Redo();
+
         }
 
         public void ColorPickerButton_Click(object sender , RoutedEventArgs e)
