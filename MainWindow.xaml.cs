@@ -23,7 +23,6 @@ namespace DrawMuse
         private ColorBucket colorBucket;
         private EraserTool eraserTool;
         private MainUndoRedoManager mainUndoRedoManager;
-        private UndoRedoManager undoRedoManager;
         private bool isColorBucket;
         private bool isDrawing;
         private bool isEyeDropper;
@@ -32,7 +31,6 @@ namespace DrawMuse
         {
             InitializeComponent();
 
-            undoRedoManager = new UndoRedoManager();
             mainUndoRedoManager = new MainUndoRedoManager(drawingCanvas);
             drawingTools = new DrawingTools(drawingCanvas , mainUndoRedoManager);
             colorManager = new ColorManager(drawingTools , drawingCanvas);
@@ -48,7 +46,6 @@ namespace DrawMuse
         {
             isEraserActive = !isEraserActive;
         }
-
         private void Canvas_MouseMove(object sender , MouseEventArgs e)
         {
             if(isEraserActive)
@@ -69,29 +66,26 @@ namespace DrawMuse
                 EraserButton.Background = Brushes.Transparent;
             }
         }
-        private void SetCanvasSize_Click(object sender , RoutedEventArgs e)
+        private void SetCanvasSize_Click(object sender, RoutedEventArgs e)
         {
-            CanvasSizeWindow sizeWindow = new CanvasSizeWindow();
+            CanvasSizeWindow sizeWindow = new CanvasSizeWindow(mainUndoRedoManager);
             sizeWindow.Owner = this;
+
             if (sizeWindow.ShowDialog() == true)
             {
                 int newWidth = sizeWindow.CanvasWidth;
                 int newHeight = sizeWindow.CanvasHeight;
 
-           
                 int previousWidth = (int)drawingCanvas.Width;
                 int previousHeight = (int)drawingCanvas.Height;
 
-             
                 drawingCanvas.Width = newWidth;
                 drawingCanvas.Height = newHeight;
 
-              
                 var action = new CanvasSizeChangeAction(previousWidth, previousHeight, newWidth, newHeight);
-                undoRedoManager.Do(action);
+                mainUndoRedoManager.Do(action);
             }
         }
-
         private void OnColorSelected(Color color)
         {
             colorBucket.UpdateBucketColor(color);
@@ -105,9 +99,6 @@ namespace DrawMuse
                 colorBucket.FillArea(point);
             }
         }
-
-     
-
         private void EyedropperButton_Click(object sender, RoutedEventArgs e)
         {
 
@@ -139,8 +130,6 @@ namespace DrawMuse
                 ColorBucket.Background = Brushes.Transparent;
             }
         }
-
-
         private void DrawButton_Click(object sender, RoutedEventArgs e)    
         {
             isDrawing = !isDrawing;
@@ -157,38 +146,14 @@ namespace DrawMuse
 
 
         }    
-
         public void UndoButton_Click(object sender , RoutedEventArgs e)
         {
-            if (undoRedoManager.CanUndo)
-            {
-                var action = undoRedoManager.Undo();
-                if (action != null)
-                {
-                    drawingCanvas.Width = action.PreviousWidth;
-                    drawingCanvas.Height = action.PreviousHeight;
-                }
-            }
-             
             mainUndoRedoManager.Undo();
         }
-
         public void RedoButton_Click(object sender , RoutedEventArgs e)
         {
-            if (undoRedoManager.CanRedo)
-            {
-                var action = undoRedoManager.Redo();
-                if (action != null)
-                {
-                    drawingCanvas.Width = action.NewWidth;
-                    drawingCanvas.Height = action.NewHeight;
-                }
-            }
-
             mainUndoRedoManager.Redo();
-
         }
-
         public void ColorPickerButton_Click(object sender , RoutedEventArgs e)
         {
             ColorPickerControl.IsOpen = true;
@@ -205,6 +170,4 @@ namespace DrawMuse
             }
         }
     }
-
-
 }

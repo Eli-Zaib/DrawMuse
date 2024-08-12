@@ -82,6 +82,7 @@
     <Compile Include="ShapesTools.cs" />
     <Compile Include="Undo_Redo.cs" />
     <Compile Include="Undo_Redo\BucketAction.cs" />
+    <Compile Include="Undo_Redo\CanvasSizeChangeAction.cs" />
     <Compile Include="Undo_Redo\DrawAction.cs" />
     <Compile Include="Undo_Redo\EraseAction.cs" />
     <Compile Include="Undo_Redo\MainUndoRedoManager.cs" />
