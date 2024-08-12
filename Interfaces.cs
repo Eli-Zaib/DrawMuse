@@ -15,18 +15,16 @@ namespace DrawMuse
 
     }
 
-    interface IDrawingTools
+    public interface IDrawingTools
     {
         void Pencil();    
         void SetBrush(SolidColorBrush brush);
         void RemovePencil();
-        void Brush();
-        void DifferentBrushes(); // Different types of brushes, to be defined later
         void Undo();
         void Redo();
     }
 
-    interface IShapesTools
+    public interface IShapesTools
     {
         void Line(Canvas canvas, Point startPoint, Point endPoint);
         void Cube();
@@ -35,7 +33,7 @@ namespace DrawMuse
         void Rectangle();
     }
 
-    interface IUndoRedo
+    public interface IUndoRedo
     {
         void Execute(Canvas canvas);
         void Undo(Canvas canvas);
@@ -43,13 +41,13 @@ namespace DrawMuse
     }
 
 
-    interface IAdjustableSize
+    public interface IAdjustableSize
     {
         void Resize(int newSize);
     }
 
 
-    interface ISaveFile
+    public interface ISaveFile
     {
         void Save();
         void HandleSaveError();
@@ -59,13 +57,13 @@ namespace DrawMuse
     }
 
 
-    interface IEraserTool
+    public interface IEraserTool
     {
         void Eraser(Point position, double size);
     }
 
 
-    interface IColorManager
+    public interface IColorManager
     {
 
         void CreateColorPalette(Panel palletPanel);
@@ -74,7 +72,7 @@ namespace DrawMuse
 
     }
 
-    interface IColorTools
+    public interface IColorTools
     {
         void UseEyeDropper(Canvas canvas);
         void DisableEyeDropper(Canvas canvas);
@@ -82,9 +80,17 @@ namespace DrawMuse
     }
 
 
-    interface IFormat
+    public interface IFormat
     {
         void SaveAsPNG();
         void SaveAsJPEG();
     }
+
+    public  interface IHistoryAction
+    {
+        void Undo(Canvas canvas);
+        void Redo(Canvas canvas);
+
+    }
+
 }

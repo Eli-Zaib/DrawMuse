@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
@@ -12,15 +9,14 @@ namespace DrawMuse
     internal class EraserTool
     {
         private Canvas drawingCanvas;
-        private Stack<List<UIElement>> undoStack;
-        private Stack<List<UIElement>> redoStack;
+        private List<UIElement> erasedElements;
+        private MainUndoRedoManager undoRedoManager;
 
-
-        public EraserTool(Canvas canvas)
+        public EraserTool(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
             drawingCanvas = canvas;
-            undoStack = new Stack<List<UIElement>>();
-            redoStack = new Stack<List<UIElement>>();
+            erasedElements = new List<UIElement>();
+            this.undoRedoManager = undoRedoManager;
         }
 
         public void Erase(Point position, double size)
@@ -40,9 +36,8 @@ namespace DrawMuse
 
             if (toRemove.Count > 0)
             {
-                undoStack.Push(new List<UIElement>(toRemove));
-
-                redoStack.Clear();
+                erasedElements.AddRange(toRemove);
+                undoRedoManager.Do(new EraseAction(toRemove, drawingCanvas));
 
                 foreach (var item in toRemove)
                 {
@@ -51,41 +46,11 @@ namespace DrawMuse
             }
         }
 
-        public void Undo()
-        {
-            if (undoStack.Count > 0)
-            {
-                var lastErased = undoStack.Pop();
-
-                redoStack.Push(new List<UIElement>(lastErased));
-
-                foreach (var element in lastErased)
-                {
-                    drawingCanvas.Children.Add(element);
-                }
-            }
-        }
-
-        public void Redo()
-        {
-            if (redoStack.Count > 0)
-            {
-                var lastRedone = redoStack.Pop();
-
-                undoStack.Push(new List<UIElement>(lastRedone));
-
-                foreach (var element in lastRedone)
-                {
-                    drawingCanvas.Children.Remove(element);
-                }
-            }
-        }
-
         private bool IsPointInShape(Point position, Shape shape)
         {
             if (shape is Line line)
             {
-                const double threshold = 5.0; 
+                const double threshold = 5.0;
                 double distance = DistanceFromPointToLine(position, line);
                 return distance <= threshold;
             }

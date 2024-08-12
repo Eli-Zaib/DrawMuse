@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,17 +10,17 @@ namespace DrawMuse
 {
     public class DrawingTools : IDrawingTools
     {
-        private Stack<IUndoRedo> undoStack = new Stack<IUndoRedo>();
-        private Stack<IUndoRedo> redoStack = new Stack<IUndoRedo>();
-
+        private MainUndoRedoManager undoRedoManager;
+        private Canvas drawingCanvas;
         private bool isDrawing;
         private Point previousPoint;
-        private Canvas drawingCanvas;
         private SolidColorBrush currentBrush = Brushes.Black;
         private List<Line> currentStroke;
-        public DrawingTools(Canvas canvas)
+
+        public DrawingTools(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
             drawingCanvas = canvas;
+            this.undoRedoManager = undoRedoManager;
         }
 
         public void Pencil()
@@ -42,8 +41,7 @@ namespace DrawMuse
         {
             isDrawing = true;
             previousPoint = e.GetPosition(drawingCanvas);
-
-            currentStroke  = new List<Line>();
+            currentStroke = new List<Line>();
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -52,7 +50,6 @@ namespace DrawMuse
             {
                 Point currentPoint = e.GetPosition(drawingCanvas);
 
-             
                 if (previousPoint != currentPoint)
                 {
                     Line line = new Line
@@ -64,64 +61,41 @@ namespace DrawMuse
                         X2 = currentPoint.X,
                         Y2 = currentPoint.Y
                     };
-                    
+
                     drawingCanvas.Children.Add(line);
                     currentStroke.Add(line);
                     previousPoint = currentPoint;
-
-                    
                 }
             }
         }
 
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if(isDrawing)
+            if (isDrawing)
             {
                 isDrawing = false;
 
-                if(currentStroke.Count > 0)
+                if (currentStroke.Count > 0)
                 {
-                    undoStack.Push(new Undo_Redo(currentStroke));
-                    redoStack.Clear();
+                    IHistoryAction drawAction = new DrawAction(currentStroke, drawingCanvas);
+                    undoRedoManager.Do(drawAction);
                 }
             }
-          
         }
 
         public void SetBrush(SolidColorBrush brush)
         {
             currentBrush = brush;
         }
+
         public void Undo()
         {
-            if (undoStack.Count > 0)
-            {
-                IUndoRedo lastAction = undoStack.Pop();
-                lastAction.Undo(drawingCanvas);
-                redoStack.Push(lastAction);
-            }
+            undoRedoManager.Undo();
         }
 
         public void Redo()
         {
-            if (redoStack.Count > 0)
-            {
-                IUndoRedo lastAction = redoStack.Pop();
-                lastAction.Redo(drawingCanvas);
-                undoStack.Push(lastAction);
-            }
-        }
-
-     
-        public void Brush()
-        {
-            // Implement Brush functionality
-        }
-
-        public void DifferentBrushes()
-        {
-            // Implement DifferentBrushes functionality
+            undoRedoManager.Redo();
         }
     }
 }

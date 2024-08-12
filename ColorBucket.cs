@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace DrawMuse
 {
@@ -19,11 +16,13 @@ namespace DrawMuse
         private bool isBucketToolActive;
         private Color currentColor;
         private Canvas drawingCanvas;
+        private MainUndoRedoManager undoRedoManager; // Add this field
 
-        public ColorBucket(Canvas canvas)
+        public ColorBucket(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
-
             drawingCanvas = canvas;
+            this.undoRedoManager = undoRedoManager; // Initialize undoRedoManager
+
             undoStack = new Stack<byte[]>();
             redoStack = new Stack<byte[]>();
 
@@ -35,7 +34,6 @@ namespace DrawMuse
 
             Image image = new Image { Source = bitmap };
             drawingCanvas.Children.Add(image);
-
         }
 
         public void UpdateBucketColor(Color color)
@@ -67,9 +65,8 @@ namespace DrawMuse
 
                 if (targetColor.HasValue)
                 {
-
-                    FloodFill(x, y, targetColor.Value, currentColor);
-                    UpdateBitmap();
+                    var bucketAction = new BucketAction(x, y, targetColor.Value, currentColor, bitmap, pixelBuffer);
+                    undoRedoManager.Do(bucketAction); // Use Do method to handle actions
                 }
             }
         }
@@ -95,7 +92,6 @@ namespace DrawMuse
         {
             if (targetColor == replacementColor)
                 return;
-
 
             int width = bitmap.PixelWidth;
             int height = bitmap.PixelHeight;
@@ -139,7 +135,7 @@ namespace DrawMuse
                 if (py < height - 1) stack.Push(new Point(px, py + 1));
             }
 
-            UpdateBitmap(); // Update the bitmap with the pixel buf
+            UpdateBitmap(); // Update the bitmap with the pixel buffer
         }
 
         private void UpdateBitmap()

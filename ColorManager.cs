@@ -15,14 +15,12 @@ namespace DrawMuse
     {
         private SolidColorBrush currentBrush;
         private IDrawingTools drawingTools;
-        private ColorBucket colorBucket;
 
     
 
         public ColorManager(IDrawingTools drawingTools, Canvas canvas)
         {
             this.drawingTools = drawingTools;
-            colorBucket = new ColorBucket(canvas);
         }
         public void CreateColorPalette(Panel palletPanel)
         {

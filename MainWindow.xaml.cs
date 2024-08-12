@@ -13,21 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
-
 namespace DrawMuse
 {
-
     public partial class MainWindow : Window
     {
-      
-
         private IDrawingTools drawingTools;
         private IColorManager colorManager;
         private ColorTools colorTools;
         private ColorBucket colorBucket;
         private EraserTool eraserTool;
-        private UndoRedoManager undoRedoManager = new UndoRedoManager();
+        private MainUndoRedoManager mainUndoRedoManager;
+        private UndoRedoManager undoRedoManager;
         private bool isColorBucket;
         private bool isDrawing;
         private bool isEyeDropper;
@@ -36,12 +32,14 @@ namespace DrawMuse
         {
             InitializeComponent();
 
-            drawingTools = new DrawingTools(drawingCanvas);
+            undoRedoManager = new UndoRedoManager();
+            mainUndoRedoManager = new MainUndoRedoManager(drawingCanvas);
+            drawingTools = new DrawingTools(drawingCanvas , mainUndoRedoManager);
             colorManager = new ColorManager(drawingTools , drawingCanvas);
-            colorBucket = new ColorBucket(drawingCanvas);
+            colorBucket = new ColorBucket(drawingCanvas, mainUndoRedoManager);
             colorManager.CreateColorPalette(ColorPalette);
             colorTools = new ColorTools(drawingTools , EyeDropper);
-            eraserTool = new EraserTool(drawingCanvas);
+            eraserTool = new EraserTool(drawingCanvas, mainUndoRedoManager);
             colorTools.ColorSelected += OnColorSelected;
 
         }
@@ -171,10 +169,8 @@ namespace DrawMuse
                     drawingCanvas.Height = action.PreviousHeight;
                 }
             }
-
-            drawingTools.Undo();
-            colorBucket.Undo();
-            eraserTool.Undo();
+             
+            mainUndoRedoManager.Undo();
         }
 
         public void RedoButton_Click(object sender , RoutedEventArgs e)
@@ -189,9 +185,7 @@ namespace DrawMuse
                 }
             }
 
-            drawingTools.Redo();
-            colorBucket.Redo();
-            eraserTool.Redo();
+            mainUndoRedoManager.Redo();
 
         }
 
