@@ -32,21 +32,10 @@ namespace DrawMuse
         void Circle();
         void Rectangle();
     }
-
-    public interface IUndoRedo
-    {
-        void Execute(Canvas canvas);
-        void Undo(Canvas canvas);
-        void Redo(Canvas canvas);
-    }
-
-
     public interface IAdjustableSize
     {
         void Resize(int newSize);
     }
-
-
     public interface ISaveFile
     {
         void Save();

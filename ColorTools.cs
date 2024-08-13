@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace DrawMuse
 {
@@ -15,12 +16,12 @@ namespace DrawMuse
     {
         private IDrawingTools drawingTools;
         public bool isEyeDropperActive = false;
-        private Button eyeDropperButton;
+        private ToggleButton eyeDropperButton;
         public Action<Color> ColorSelected { get; set; }
 
 
 
-        public ColorTools(IDrawingTools drawingTools, Button eyedropperButton)
+        public ColorTools(IDrawingTools drawingTools, ToggleButton eyedropperButton)
         {
             this.drawingTools = drawingTools;
             this.eyeDropperButton = eyedropperButton;
@@ -45,7 +46,7 @@ namespace DrawMuse
                 isEyeDropperActive = false;
                 Application.Current.Dispatcher.Invoke(() =>
                 {
-                    eyeDropperButton.Background = Brushes.Transparent; // Ensure this UI update is on the UI thread
+                    eyeDropperButton.Background = Brushes.Transparent;
                 });
             }
 

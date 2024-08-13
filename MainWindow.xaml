@@ -17,19 +17,24 @@
             <Canvas Name="drawingCanvas" 
                     Background="White" Width="1920" Height="1080" Margin="0,0,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove" />
         </ScrollViewer>
+        
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
         <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
 
         <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,100" >
         </UniformGrid>
 
-        <Button x:Name="drawButton" Width="35" Height="36" Margin="0,0,1820,960" Click="DrawButton_Click" Background="Transparent" BorderBrush="Transparent">
+        <ToggleButton x:Name="drawButton" Width="35" Height="36" Margin="0,0,1820,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+                      Background="Transparent" BorderBrush="Transparent"
+                      Tag="{x:Static local:ToolMode.Pencil}">
             <Image Source="Icons/paint-brush.png" Width="32" Height="32"/>
-        </Button>
+        </ToggleButton>
 
-        <Button x:Name="EraserButton" Click="EraserButton_Click" Width="35" Height="36" Margin="0,0,1720,960" Background="Transparent" BorderBrush="Transparent">
+        <ToggleButton x:Name="EraserButton" Width="35" Height="36" Margin="0,0,1720,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked" 
+                      Background="Transparent" BorderBrush="Transparent"
+                      Tag="{x:Static local:ToolMode.Eraser}">
             <Image Source="Icons/eraser.png" Width="32" Height="32" />
-        </Button>
+        </ToggleButton>
 
         <Button x:Name="undoButton" Click ="UndoButton_Click" Width="35" Height="36" Margin="1520,0,0,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/undo.png" Width="32" Height="32" />
@@ -39,9 +44,9 @@
             <Image Source="Icons/redo.png" Width="32" Height="32" />
         </Button>
 
-        <Button x:Name="DrawLine" Width="35" Height="36" Margin="0,0,1320,960" Background="Transparent" BorderBrush="Transparent">
+        <ToggleButton x:Name="DrawLine" Width="35" Height="36" Margin="0,0,1320,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/slash.png" Width="32" Height="32" />
-        </Button>
+        </ToggleButton>
 
         <xctk:ColorPicker x:Name="ColorPickerControl" 
                           SelectedColorChanged="ColorPickerControl_SelectedColorChanged"
@@ -51,13 +56,17 @@
             <Image Source="Icons/palette.png" Width="32" Height="32" />
         </Button>
 
-        <Button x:Name="ColorBucket" Click="ColorBucket_Click" Width="35" Height="36" Margin="0,0,1520,960" Background="Transparent" BorderBrush="Transparent">
+        <ToggleButton x:Name="ColorBucket" Width="35" Height="36" Margin="0,0,1520,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+                Background="Transparent" BorderBrush="Transparent"
+                      Tag="{x:Static local:ToolMode.ColorBucket}">
             <Image Source="Icons/fill.png" Width="32" Height="32" />
-        </Button>
+        </ToggleButton>
 
-        <Button x:Name="EyeDropper" Width="35" Click="EyedropperButton_Click" Height="36" Margin="0,0,1420,960" Background="Transparent" BorderBrush="Transparent">
+        <ToggleButton Name="EyeDropper" Width="35" Height="36" Margin="0,0,1420,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+                      Background="Transparent" BorderBrush="Transparent"
+                      Tag="{x:Static local:ToolMode.EyeDropperColorPicker}">
             <Image Source="Icons/eye-dropper.png" Width="32" Height="32" />
-        </Button>
+        </ToggleButton>
 
         <Button x:Name="SetCanvasSize" Width="35" Click="SetCanvasSize_Click" Height="36" Margin="0,0,1220,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/canvas.png"/>

@@ -80,7 +80,6 @@
     <Compile Include="EraserTool.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="ShapesTools.cs" />
-    <Compile Include="Undo_Redo.cs" />
     <Compile Include="Undo_Redo\BucketAction.cs" />
     <Compile Include="Undo_Redo\CanvasSizeChangeAction.cs" />
     <Compile Include="Undo_Redo\DrawAction.cs" />

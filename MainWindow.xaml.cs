@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -15,6 +16,14 @@ using System.Windows.Shapes;
 
 namespace DrawMuse
 {
+    public enum ToolMode
+    {
+        None,
+        Pencil,
+        Eraser,
+        ColorBucket,
+        EyeDropperColorPicker
+    }
     public partial class MainWindow : Window
     {
         private IDrawingTools drawingTools;
@@ -23,8 +32,8 @@ namespace DrawMuse
         private ColorBucket colorBucket;
         private EraserTool eraserTool;
         private MainUndoRedoManager mainUndoRedoManager;
+        private ToolMode currentToolMode = ToolMode.None;
         private bool isColorBucket;
-        private bool isDrawing;
         private bool isEyeDropper;
         private bool isEraserActive;
         public MainWindow()
@@ -42,9 +51,62 @@ namespace DrawMuse
 
         }
 
-        private void EraserButton_Click(object sender , RoutedEventArgs e)
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
-            isEraserActive = !isEraserActive;
+            if (sender is ToggleButton checkedButton)
+            {
+                ToolMode newMode = (ToolMode)checkedButton.Tag;
+
+                foreach (var child in ((Grid)this.Content).Children)
+                {
+                    if (child is ToggleButton button && button != checkedButton)
+                    {
+                        button.IsChecked = false;
+                    }
+                }
+
+                currentToolMode = newMode;
+
+                HandleToolModeChange(currentToolMode);
+            }
+        }
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (sender is ToggleButton uncheckedButton && (ToolMode)uncheckedButton.Tag == currentToolMode)
+            {
+                currentToolMode = ToolMode.None;
+                HandleToolModeChange(currentToolMode);
+            }
+        }
+        private void HandleToolModeChange(ToolMode toolMode)
+        {
+            switch (toolMode)
+            {
+                    case ToolMode.Pencil:
+                    drawingTools.Pencil();
+                    break;
+
+                    case ToolMode.Eraser:
+                    isEraserActive = true;
+                    break;
+
+                    case ToolMode.ColorBucket:
+                    isColorBucket = true;
+                    colorBucket.ActivateBucket();
+                    break;
+
+                    case ToolMode.EyeDropperColorPicker:
+                    colorTools.UseEyeDropper(drawingCanvas);
+                    break;
+
+                    case ToolMode.None:
+                    drawingTools.RemovePencil();
+                    colorTools.DisableEyeDropper(drawingCanvas);
+                    isEraserActive = false;
+                    isColorBucket = false;
+                    break;
+            }
+
         }
         private void Canvas_MouseMove(object sender , MouseEventArgs e)
         {
@@ -99,53 +161,6 @@ namespace DrawMuse
                 colorBucket.FillArea(point);
             }
         }
-        private void EyedropperButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            isEyeDropper = !isEyeDropper;
-            if (isEyeDropper)
-            {
-
-                colorTools.UseEyeDropper(drawingCanvas);
-                EyeDropper.Background = Brushes.LightBlue;
-
-            }
-            else
-            {
-                colorTools.DisableEyeDropper(drawingCanvas);
-                EyeDropper.Background = Brushes.Transparent;
-            }
-
-        }
-        private void ColorBucket_Click(object sender , RoutedEventArgs e)
-        {
-            isColorBucket = !isColorBucket;
-            if(isColorBucket)
-            {
-                colorBucket.ActivateBucket();
-                ColorBucket.Background = Brushes.LightBlue;
-            }
-            else
-            {
-                ColorBucket.Background = Brushes.Transparent;
-            }
-        }
-        private void DrawButton_Click(object sender, RoutedEventArgs e)    
-        {
-            isDrawing = !isDrawing;
-            if (isDrawing)
-            {
-                drawingTools.Pencil();
-                drawButton.Background = Brushes.LightBlue;
-            }
-            else
-            {
-                drawingTools.RemovePencil();
-                drawButton.Background = Brushes.Transparent;
-            }
-
-
-        }    
         public void UndoButton_Click(object sender , RoutedEventArgs e)
         {
             mainUndoRedoManager.Undo();
