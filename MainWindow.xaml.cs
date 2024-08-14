@@ -22,6 +22,10 @@ namespace DrawMuse
         Pencil,
         Eraser,
         ColorBucket,
+        Line,
+        Square,
+        Rectangle,
+        Ellipse,
         EyeDropperColorPicker
     }
     public partial class MainWindow : Window
@@ -32,6 +36,7 @@ namespace DrawMuse
         private ColorBucket colorBucket;
         private EraserTool eraserTool;
         private MainUndoRedoManager mainUndoRedoManager;
+        private ShapeTools shapeTools;
         private ToolMode currentToolMode = ToolMode.None;
         private bool isColorBucket;
         private bool isEyeDropper;
@@ -42,7 +47,8 @@ namespace DrawMuse
 
             mainUndoRedoManager = new MainUndoRedoManager(drawingCanvas);
             drawingTools = new DrawingTools(drawingCanvas , mainUndoRedoManager);
-            colorManager = new ColorManager(drawingTools , drawingCanvas);
+            shapeTools = new ShapeTools(drawingCanvas , mainUndoRedoManager);
+            colorManager = new ColorManager(drawingTools , drawingCanvas , shapeTools);
             colorBucket = new ColorBucket(drawingCanvas, mainUndoRedoManager);
             colorManager.CreateColorPalette(ColorPalette);
             colorTools = new ColorTools(drawingTools , EyeDropper);
@@ -80,6 +86,8 @@ namespace DrawMuse
         }
         private void HandleToolModeChange(ToolMode toolMode)
         {
+            ResetActiveTools();
+
             switch (toolMode)
             {
                     case ToolMode.Pencil:
@@ -99,14 +107,38 @@ namespace DrawMuse
                     colorTools.UseEyeDropper(drawingCanvas);
                     break;
 
+                    case ToolMode.Square:
+                    shapeTools.EnableShapeDrawing();
+                    shapeTools.SelectedShape = ShapeType.Square;
+                    break;
+
+                    case ToolMode.Line:
+                    shapeTools.EnableShapeDrawing();
+                    shapeTools.SelectedShape = ShapeType.Line;
+                    break;
+
+                    case ToolMode.Rectangle:
+                    shapeTools.EnableShapeDrawing();
+                    shapeTools.SelectedShape = ShapeType.Rectangle;
+                    break;
+
+                    case ToolMode.Ellipse:
+                    shapeTools.EnableShapeDrawing();
+                    shapeTools.SelectedShape = ShapeType.Ellipse;
+                    break;
+
                     case ToolMode.None:
-                    drawingTools.RemovePencil();
-                    colorTools.DisableEyeDropper(drawingCanvas);
-                    isEraserActive = false;
-                    isColorBucket = false;
                     break;
             }
 
+        }
+        private void ResetActiveTools()
+        {
+            drawingTools.RemovePencil();
+            colorTools.DisableEyeDropper(drawingCanvas);
+            shapeTools.DisableShapeDrawing();
+            isEraserActive = false;
+            isColorBucket = false;
         }
         private void Canvas_MouseMove(object sender , MouseEventArgs e)
         {
@@ -152,6 +184,7 @@ namespace DrawMuse
         {
             colorBucket.UpdateBucketColor(color);
             drawingTools.SetBrush(new SolidColorBrush(color));
+            shapeTools.SetBrush(new SolidColorBrush(color));
         }
         private void DrawingCanvas_MouseLeftButtonDown(object sender , MouseButtonEventArgs e)  
         {
@@ -180,7 +213,7 @@ namespace DrawMuse
                 Color selectedColor = e.NewValue.Value;
                 SolidColorBrush brush = new SolidColorBrush(e.NewValue.Value);
                 drawingTools.SetBrush(brush);
-
+                shapeTools.SetBrush(brush);
                 colorBucket.UpdateBucketColor(selectedColor);
             }
         }

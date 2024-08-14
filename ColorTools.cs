@@ -44,10 +44,7 @@ namespace DrawMuse
             {
                 canvas.MouseLeftButtonDown -= Canvas_MouseLeftButtonDown;
                 isEyeDropperActive = false;
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    eyeDropperButton.Background = Brushes.Transparent;
-                });
+                eyeDropperButton.IsChecked = false;
             }
 
         }

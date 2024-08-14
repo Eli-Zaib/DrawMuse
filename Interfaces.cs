@@ -24,14 +24,6 @@ namespace DrawMuse
         void Redo();
     }
 
-    public interface IShapesTools
-    {
-        void Line(Canvas canvas, Point startPoint, Point endPoint);
-        void Cube();
-        void Cylinder();
-        void Circle();
-        void Rectangle();
-    }
     public interface IAdjustableSize
     {
         void Resize(int newSize);

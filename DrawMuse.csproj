@@ -79,12 +79,13 @@
     <Compile Include="ColorTools.cs" />
     <Compile Include="EraserTool.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="ShapesTools.cs" />
+    <Compile Include="ShapeTools.cs" />
     <Compile Include="Undo_Redo\BucketAction.cs" />
     <Compile Include="Undo_Redo\CanvasSizeChangeAction.cs" />
     <Compile Include="Undo_Redo\DrawAction.cs" />
     <Compile Include="Undo_Redo\EraseAction.cs" />
     <Compile Include="Undo_Redo\MainUndoRedoManager.cs" />
+    <Compile Include="Undo_Redo\ShapeAction.cs" />
     <Page Include="CanvasSizeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +153,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\canvas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\oval.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\rectangle.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

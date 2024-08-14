@@ -21,7 +21,7 @@
         <Rectangle Width="100" HorizontalAlignment="Left" Fill="{StaticResource sideBarColor}" Margin="0,99,0,0" />
         <Rectangle Width="1920" Height="100" VerticalAlignment="Top" Fill="{StaticResource upperBarColor}"/>
 
-        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,100" >
+        <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,250" >
         </UniformGrid>
 
         <ToggleButton x:Name="drawButton" Width="35" Height="36" Margin="0,0,1820,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
@@ -44,9 +44,6 @@
             <Image Source="Icons/redo.png" Width="32" Height="32" />
         </Button>
 
-        <ToggleButton x:Name="DrawLine" Width="35" Height="36" Margin="0,0,1320,960" Background="Transparent" BorderBrush="Transparent">
-            <Image Source="Icons/slash.png" Width="32" Height="32" />
-        </ToggleButton>
 
         <xctk:ColorPicker x:Name="ColorPickerControl" 
                           SelectedColorChanged="ColorPickerControl_SelectedColorChanged"
@@ -68,13 +65,35 @@
             <Image Source="Icons/eye-dropper.png" Width="32" Height="32" />
         </ToggleButton>
 
-        <Button x:Name="SetCanvasSize" Width="35" Click="SetCanvasSize_Click" Height="36" Margin="0,0,1220,960" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="SetCanvasSize" Width="35" Click="SetCanvasSize_Click" Height="36" Margin="0,0,1320,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/canvas.png"/>
         </Button>
 
+        <ToggleButton x:Name="SquareShape" Width="35" Height="36" Margin="0,0,1860,780" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Tag="{x:Static local:ToolMode.Square}">
+            <Image Source="Icons/square.png"/>
+        </ToggleButton>
+
+        <ToggleButton x:Name="RectangleShape" Width="35" Height="36" Margin="0,0,1760,780" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+                Background="Transparent" BorderBrush="Transparent"
+                Tag="{x:Static local:ToolMode.Rectangle}">
+            <Image Source="Icons/rectangle.png"/>
+        </ToggleButton>
+
+        <ToggleButton x:Name="EllipseShape" Width="35" Height="36" Margin="0,0,1860,680" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+                Background="Transparent" BorderBrush="Transparent"
+                Tag="{x:Static local:ToolMode.Ellipse}">
+            <Image Source="Icons/Oval.png"/>
+        </ToggleButton>
 
 
-
+        <ToggleButton x:Name="DrawLine" Width="35" Height="36" Margin="0,0,1770,680" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Checked"
+                      Background="Transparent" BorderBrush="Transparent"
+                      Tag="{x:Static local:ToolMode.Line}">
+            <Image Source="Icons/slash.png" Width="32" Height="32" />
+        </ToggleButton>
 
     </Grid>
 </Window>
