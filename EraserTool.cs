@@ -11,12 +11,18 @@ namespace DrawMuse
         private Canvas drawingCanvas;
         private List<UIElement> erasedElements;
         private MainUndoRedoManager undoRedoManager;
+        private double eraserSize = 10;
 
         public EraserTool(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
             drawingCanvas = canvas;
             erasedElements = new List<UIElement>();
             this.undoRedoManager = undoRedoManager;
+        }
+
+        public void SetSize(double size)
+        {
+            eraserSize = size;
         }
 
         public void Erase(Point position, double size)
@@ -50,12 +56,11 @@ namespace DrawMuse
         {
             if (shape is Line line)
             {
-                const double threshold = 5.0;
-                double distance = DistanceFromPointToLine(position, line);
-                return distance <= threshold;
+                return DistanceFromPointToLine(position, line) <= eraserSize;
             }
 
             var shapeBounds = shape.RenderedGeometry.Bounds;
+            shapeBounds.Inflate(eraserSize / 2, eraserSize / 2);
             return shapeBounds.Contains(position);
         }
 

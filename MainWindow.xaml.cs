@@ -54,6 +54,7 @@ namespace DrawMuse
             colorTools = new ColorTools(drawingTools , EyeDropper);
             eraserTool = new EraserTool(drawingCanvas, mainUndoRedoManager);
             colorTools.ColorSelected += OnColorSelected;
+            SizeAdjuster.ValueChanged += SizeAdjuster_ValueChanged;
 
         }
 
@@ -139,6 +140,12 @@ namespace DrawMuse
             shapeTools.DisableShapeDrawing();
             isEraserActive = false;
             isColorBucket = false;
+        }
+
+        private void SizeAdjuster_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            drawingTools.SetSize(e.NewValue);
+            eraserTool.SetSize(e.NewValue);
         }
         private void Canvas_MouseMove(object sender , MouseEventArgs e)
         {

@@ -20,6 +20,7 @@ namespace DrawMuse
         void Pencil();    
         void SetBrush(SolidColorBrush brush);
         void RemovePencil();
+        void SetSize(double size);
         void Undo();
         void Redo();
     }

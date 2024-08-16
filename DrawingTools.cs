@@ -16,6 +16,7 @@ namespace DrawMuse
         private Point previousPoint;
         private SolidColorBrush currentBrush = Brushes.Black;
         private List<Line> currentStroke;
+        private double currentSize = 2;
 
         public DrawingTools(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
@@ -23,6 +24,10 @@ namespace DrawMuse
             this.undoRedoManager = undoRedoManager;
         }
 
+        public void SetSize(double size)
+        {
+            currentSize = size;
+        }
         public void Pencil()
         {
             drawingCanvas.MouseDown += Canvas_MouseDown;
@@ -55,11 +60,13 @@ namespace DrawMuse
                     Line line = new Line
                     {
                         Stroke = currentBrush,
-                        StrokeThickness = 2,
+                        StrokeThickness = currentSize,
                         X1 = previousPoint.X,
                         Y1 = previousPoint.Y,
                         X2 = currentPoint.X,
-                        Y2 = currentPoint.Y
+                        Y2 = currentPoint.Y,
+                        StrokeStartLineCap = PenLineCap.Round, 
+                        StrokeEndLineCap = PenLineCap.Round   
                     };
 
                     drawingCanvas.Children.Add(line);
