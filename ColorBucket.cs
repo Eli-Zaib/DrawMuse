@@ -16,12 +16,12 @@ namespace DrawMuse
         private bool isBucketToolActive;
         private Color currentColor;
         private Canvas drawingCanvas;
-        private MainUndoRedoManager undoRedoManager; 
+        private MainUndoRedoManager undoRedoManager; // Add this field
 
         public ColorBucket(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
             drawingCanvas = canvas;
-            this.undoRedoManager = undoRedoManager; 
+            this.undoRedoManager = undoRedoManager; // Initialize undoRedoManager
 
             undoStack = new Stack<byte[]>();
             redoStack = new Stack<byte[]>();
@@ -66,7 +66,7 @@ namespace DrawMuse
                 if (targetColor.HasValue)
                 {
                     var bucketAction = new BucketAction(x, y, targetColor.Value, currentColor, bitmap, pixelBuffer);
-                    undoRedoManager.Do(bucketAction); 
+                    undoRedoManager.Do(bucketAction); // Use Do method to handle actions
                 }
             }
         }
@@ -119,6 +119,7 @@ namespace DrawMuse
                 if (currentPixelColor != targetColor)
                     continue;
 
+                // Update the pixel in the buffer
                 int pixelIndex = (py * width + px) * 4;
                 pixelBuffer[pixelIndex] = replacementPixelData[0];
                 pixelBuffer[pixelIndex + 1] = replacementPixelData[1];
@@ -127,13 +128,14 @@ namespace DrawMuse
 
                 visited[px, py] = true;
 
+                // Push neighboring pixels to the stack
                 if (px > 0) stack.Push(new Point(px - 1, py));
                 if (px < width - 1) stack.Push(new Point(px + 1, py));
                 if (py > 0) stack.Push(new Point(px, py - 1));
                 if (py < height - 1) stack.Push(new Point(px, py + 1));
             }
 
-            UpdateBitmap(); 
+            UpdateBitmap(); // Update the bitmap with the pixel buffer
         }
 
         private void UpdateBitmap()

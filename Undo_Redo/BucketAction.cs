@@ -9,13 +9,13 @@ namespace DrawMuse
 {
     public class BucketAction : IHistoryAction
     {
-        private int x;
-        private int y;
-        private Color targetColor;
-        private Color replacementColor;
-        private byte[] pixelBuffer;
-        private WriteableBitmap bitmap;
-        private byte[] originalPixelBuffer;
+        private readonly int x;
+        private readonly int y;
+        private readonly Color targetColor;
+        private readonly Color replacementColor;
+        private readonly WriteableBitmap bitmap;
+        private readonly byte[] pixelBuffer;
+        private readonly byte[] originalPixelBuffer;
 
         public BucketAction(int x, int y, Color targetColor, Color replacementColor, WriteableBitmap bitmap, byte[] pixelBuffer)
         {
@@ -30,42 +30,62 @@ namespace DrawMuse
 
         public void Redo(Canvas canvas)
         {
+            if (targetColor == replacementColor)
+                return;
+
+            // Perform the flood fill algorithm
             FloodFill();
+
+            // Update the bitmap to reflect the changes
             UpdateBitmap();
         }
 
         public void Undo(Canvas canvas)
         {
-            // Restore the original state
+            // Restore the original pixel buffer
             Array.Copy(originalPixelBuffer, pixelBuffer, originalPixelBuffer.Length);
+
+            // Update the bitmap to reflect the reverted changes
             UpdateBitmap();
         }
 
         private void FloodFill()
         {
-            if (targetColor == replacementColor)
-                return;
-
             int width = bitmap.PixelWidth;
             int height = bitmap.PixelHeight;
 
-            bool[,] visited = new bool[width, height];
-            Stack<Point> stack = new Stack<Point>();
-            stack.Push(new Point(x, y));
+            if (x < 0 || x >= width || y < 0 || y >= height)
+                return;
 
-            byte[] replacementPixelData = new byte[] { replacementColor.B, replacementColor.G, replacementColor.R, replacementColor.A };
+            Color initialColor = GetColorAtPoint(x, y);
+            if (initialColor == replacementColor || initialColor != targetColor)
+                return;
 
-            while (stack.Count > 0)
+            Queue<Point> queue = new Queue<Point>();
+            queue.Enqueue(new Point(x, y));
+
+            byte[] replacementPixelData = {
+                replacementColor.B,
+                replacementColor.G,
+                replacementColor.R,
+                replacementColor.A
+            };
+
+            while (queue.Count > 0)
             {
-                Point p = stack.Pop();
+                Point p = queue.Dequeue();
                 int px = (int)p.X;
                 int py = (int)p.Y;
 
                 if (px < 0 || px >= width || py < 0 || py >= height)
                     continue;
 
-                if (visited[px, py])
-                    continue;
+                int pixelIndex = (py * width + px) * 4;
+                if (pixelBuffer[pixelIndex] == replacementPixelData[0] &&
+                    pixelBuffer[pixelIndex + 1] == replacementPixelData[1] &&
+                    pixelBuffer[pixelIndex + 2] == replacementPixelData[2] &&
+                    pixelBuffer[pixelIndex + 3] == replacementPixelData[3])
+                    continue; // Skip if pixel is already set to replacement color
 
                 Color currentPixelColor = GetColorAtPoint(px, py);
 
@@ -73,19 +93,13 @@ namespace DrawMuse
                     continue;
 
                 // Update the pixel in the buffer
-                int pixelIndex = (py * width + px) * 4;
-                pixelBuffer[pixelIndex] = replacementPixelData[0];
-                pixelBuffer[pixelIndex + 1] = replacementPixelData[1];
-                pixelBuffer[pixelIndex + 2] = replacementPixelData[2];
-                pixelBuffer[pixelIndex + 3] = replacementPixelData[3];
+                Array.Copy(replacementPixelData, 0, pixelBuffer, pixelIndex, 4);
 
-                visited[px, py] = true;
-
-                // Push neighboring pixels to the stack
-                if (px > 0) stack.Push(new Point(px - 1, py));
-                if (px < width - 1) stack.Push(new Point(px + 1, py));
-                if (py > 0) stack.Push(new Point(px, py - 1));
-                if (py < height - 1) stack.Push(new Point(px, py + 1));
+                // Enqueue neighboring pixels
+                if (px > 0) queue.Enqueue(new Point(px - 1, py));
+                if (px < width - 1) queue.Enqueue(new Point(px + 1, py));
+                if (py > 0) queue.Enqueue(new Point(px, py - 1));
+                if (py < height - 1) queue.Enqueue(new Point(px, py + 1));
             }
         }
 
@@ -95,13 +109,12 @@ namespace DrawMuse
                 return Colors.Transparent;
 
             int pixelIndex = (y * bitmap.PixelWidth + x) * 4;
-
-            byte b = pixelBuffer[pixelIndex];
-            byte g = pixelBuffer[pixelIndex + 1];
-            byte r = pixelBuffer[pixelIndex + 2];
-            byte a = pixelBuffer[pixelIndex + 3];
-
-            return Color.FromArgb(a, r, g, b);
+            return Color.FromArgb(
+                pixelBuffer[pixelIndex + 3],
+                pixelBuffer[pixelIndex + 2],
+                pixelBuffer[pixelIndex + 1],
+                pixelBuffer[pixelIndex]
+            );
         }
 
         private void UpdateBitmap()
