@@ -55,6 +55,13 @@ namespace DrawMuse
             {
                 Point currentPoint = e.GetPosition(drawingCanvas);
 
+                // Boundary checks
+                if (currentPoint.X < 0 || currentPoint.X > drawingCanvas.ActualWidth ||
+                    currentPoint.Y < 0 || currentPoint.Y > drawingCanvas.ActualHeight)
+                {
+                    return; // Skip drawing outside canvas
+                }
+
                 if (previousPoint != currentPoint)
                 {
                     Line line = new Line
@@ -65,8 +72,8 @@ namespace DrawMuse
                         Y1 = previousPoint.Y,
                         X2 = currentPoint.X,
                         Y2 = currentPoint.Y,
-                        StrokeStartLineCap = PenLineCap.Round, 
-                        StrokeEndLineCap = PenLineCap.Round   
+                        StrokeStartLineCap = PenLineCap.Round,
+                        StrokeEndLineCap = PenLineCap.Round
                     };
 
                     drawingCanvas.Children.Add(line);

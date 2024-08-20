@@ -56,24 +56,31 @@ namespace DrawMuse
             if (canvas != null)
             {
                 Point clickPosition = e.GetPosition(canvas);
+
+                // Ensure the click position is within canvas bounds
+                if (clickPosition.X < 0 || clickPosition.X >= canvas.ActualWidth ||
+                    clickPosition.Y < 0 || clickPosition.Y >= canvas.ActualHeight)
+                {
+                    return; // Click is outside canvas bounds
+                }
+
                 var bitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96, 96, PixelFormats.Pbgra32);
                 bitmap.Render(canvas);
 
                 int x = (int)clickPosition.X;
                 int y = (int)clickPosition.Y;
 
+                // Ensure the cropping rectangle is within bounds
                 var croppedBitmap = new CroppedBitmap(bitmap, new Int32Rect(x, y, 1, 1));
                 var pixels = new byte[4];
                 croppedBitmap.CopyPixels(pixels, 4, 0);
 
                 Color selectedColor = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
-            
+
+                MessageBox.Show($"{selectedColor}");
                 ColorSelected?.Invoke(selectedColor);
-            
 
                 DisableEyeDropper(canvas);
-              
-
             }
         }
 
