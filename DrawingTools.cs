@@ -15,19 +15,23 @@ namespace DrawMuse
         private bool isDrawing;
         private Point previousPoint;
         private SolidColorBrush currentBrush = Brushes.Black;
-        private List<Line> currentStroke;
+        private Polyline currentStroke;
         private double currentSize = 2;
 
         public DrawingTools(Canvas canvas, MainUndoRedoManager undoRedoManager)
         {
             drawingCanvas = canvas;
             this.undoRedoManager = undoRedoManager;
+
+            drawingCanvas.MouseEnter += Canvas_MouseEnter;
+            drawingCanvas.MouseLeave += Canvas_MouseLeave;
         }
 
         public void SetSize(double size)
         {
             currentSize = size;
         }
+
         public void Pencil()
         {
             drawingCanvas.MouseDown += Canvas_MouseDown;
@@ -44,9 +48,10 @@ namespace DrawMuse
 
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            isDrawing = true;
-            previousPoint = e.GetPosition(drawingCanvas);
-            currentStroke = new List<Line>();
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                StartDrawing(e.GetPosition(drawingCanvas));
+            }
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -55,29 +60,9 @@ namespace DrawMuse
             {
                 Point currentPoint = e.GetPosition(drawingCanvas);
 
-                // Boundary checks
-                if (currentPoint.X < 0 || currentPoint.X > drawingCanvas.ActualWidth ||
-                    currentPoint.Y < 0 || currentPoint.Y > drawingCanvas.ActualHeight)
-                {
-                    return; // Skip drawing outside canvas
-                }
-
                 if (previousPoint != currentPoint)
                 {
-                    Line line = new Line
-                    {
-                        Stroke = currentBrush,
-                        StrokeThickness = currentSize,
-                        X1 = previousPoint.X,
-                        Y1 = previousPoint.Y,
-                        X2 = currentPoint.X,
-                        Y2 = currentPoint.Y,
-                        StrokeStartLineCap = PenLineCap.Round,
-                        StrokeEndLineCap = PenLineCap.Round
-                    };
-
-                    drawingCanvas.Children.Add(line);
-                    currentStroke.Add(line);
+                    currentStroke.Points.Add(currentPoint);
                     previousPoint = currentPoint;
                 }
             }
@@ -89,12 +74,53 @@ namespace DrawMuse
             {
                 isDrawing = false;
 
-                if (currentStroke.Count > 0)
+                if (currentStroke.Points.Count > 0)
                 {
-                    IHistoryAction drawAction = new DrawAction(currentStroke, drawingCanvas);
+                    IHistoryAction drawAction = new DrawAction(new List<Polyline> { currentStroke }, drawingCanvas);
                     undoRedoManager.Do(drawAction);
                 }
             }
+        }
+
+        private void Canvas_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (isDrawing)
+            {
+                isDrawing = false;
+                // Add the drawn Polyline to undo stack
+                if (currentStroke != null && currentStroke.Points.Count > 0)
+                {
+                    IHistoryAction drawAction = new DrawAction(new List<Polyline> { currentStroke }, drawingCanvas);
+                    undoRedoManager.Do(drawAction);
+                }
+            }
+        }
+
+        private void Canvas_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Point currentPoint = Mouse.GetPosition(drawingCanvas);
+
+            if (Mouse.LeftButton == MouseButtonState.Pressed &&
+                currentPoint.X >= 0 && currentPoint.X <= drawingCanvas.ActualWidth &&
+                currentPoint.Y >= 0 && currentPoint.Y <= drawingCanvas.ActualHeight)
+            {
+                StartDrawing(currentPoint);
+            }
+        }
+
+        private void StartDrawing(Point startPoint)
+        {
+            isDrawing = true;
+            previousPoint = startPoint;
+
+            // Initialize the Polyline for the current stroke
+            currentStroke = new Polyline
+            {
+                Stroke = currentBrush,
+                StrokeThickness = currentSize
+            };
+            currentStroke.Points.Add(startPoint);
+            drawingCanvas.Children.Add(currentStroke);
         }
 
         public void SetBrush(SolidColorBrush brush)

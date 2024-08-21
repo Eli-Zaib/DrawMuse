@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -7,33 +6,33 @@ namespace DrawMuse
 {
     public class DrawAction : IHistoryAction
     {
-        private List<Line> lines;
+        private List<Polyline> polylines;
         private Canvas canvas;
 
-        public DrawAction(List<Line> lines, Canvas canvas)
+        public DrawAction(List<Polyline> polylines, Canvas canvas)
         {
-            this.lines = lines;
+            this.polylines = polylines;
             this.canvas = canvas;
         }
 
         public void Undo(Canvas canvas)
         {
-            foreach (var line in lines)
+            foreach (var polyline in polylines)
             {
-                if (canvas.Children.Contains(line))
+                if (canvas.Children.Contains(polyline))
                 {
-                    canvas.Children.Remove(line);
+                    canvas.Children.Remove(polyline);
                 }
             }
         }
 
         public void Redo(Canvas canvas)
         {
-            foreach (var line in lines)
+            foreach (var polyline in polylines)
             {
-                if (!canvas.Children.Contains(line))
+                if (!canvas.Children.Contains(polyline))
                 {
-                    canvas.Children.Add(line);
+                    canvas.Children.Add(polyline);
                 }
             }
         }

@@ -11,9 +11,9 @@
         <SolidColorBrush x:Key="upperBarColor" Color="#A49191" Opacity="0.16"/>
         <SolidColorBrush x:Key="sideBarColor" Color="#A49191" Opacity="0.16" />
     </Window.Resources>
-    <Grid Width="1920" Height="1080" Background="AliceBlue">
+    <Grid>
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="100,100,0,0">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible" Margin="100,100,0,0">
             <Canvas Name="drawingCanvas" 
                     Background="White" ClipToBounds="True" Width="1920" Height="1080" Margin="0,0,15,5"  MouseLeftButtonDown="DrawingCanvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove" />
         </ScrollViewer>
