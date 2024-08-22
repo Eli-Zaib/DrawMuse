@@ -14,7 +14,7 @@ namespace DrawMuse
         private byte[] pixelBuffer;
         private WriteableBitmap bitmap;
         private bool isBucketToolActive;
-        private Color currentColor;
+        private Color currentColor = Colors.DarkGreen;
         private Canvas drawingCanvas;
         private MainUndoRedoManager undoRedoManager; // Add this field
 

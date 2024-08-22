@@ -43,7 +43,7 @@ namespace DrawMuse
         private bool isEyeDropper;
         private bool isEraserActive;
         private double zoomFactor = 1.1;
-        private double minZoom = 0.1;
+        private double minZoom = 0.15;
         private double maxZoom = 5;
         public MainWindow()
         {
@@ -52,8 +52,8 @@ namespace DrawMuse
             mainUndoRedoManager = new MainUndoRedoManager(drawingCanvas);
             drawingTools = new DrawingTools(drawingCanvas , mainUndoRedoManager);
             shapeTools = new ShapeTools(drawingCanvas , mainUndoRedoManager);
-            colorManager = new ColorManager(drawingTools , drawingCanvas , shapeTools);
             colorBucket = new ColorBucket(drawingCanvas, mainUndoRedoManager);
+            colorManager = new ColorManager(drawingTools , drawingCanvas , shapeTools , colorBucket);
             colorManager.CreateColorPalette(ColorPalette);
             colorTools = new ColorTools(drawingTools , EyeDropper);
             eraserTool = new EraserTool(drawingCanvas, mainUndoRedoManager);
@@ -62,7 +62,22 @@ namespace DrawMuse
             SizeAdjuster.ValueChanged += SizeAdjuster_ValueChanged;
 
         }
-
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                if (e.Key == Key.Z)
+                {
+                    mainUndoRedoManager.Undo();
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Y)
+                {
+                    mainUndoRedoManager.Redo();
+                    e.Handled = true;
+                }
+            }
+        }
         private void DrawCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))

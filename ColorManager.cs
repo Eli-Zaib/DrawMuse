@@ -16,12 +16,14 @@ namespace DrawMuse
         private SolidColorBrush currentBrush;
         private IDrawingTools drawingTools;
         private ShapeTools shapeTools;
+        private ColorBucket colorBucket;
     
 
-        public ColorManager(IDrawingTools drawingTools, Canvas canvas, ShapeTools shapeTools)
+        public ColorManager(IDrawingTools drawingTools, Canvas canvas, ShapeTools shapeTools, ColorBucket colorBucket)
         {
             this.drawingTools = drawingTools;
             this.shapeTools = shapeTools;
+            this.colorBucket = colorBucket;
         }
         public void CreateColorPalette(Panel palletPanel)
         {
@@ -65,6 +67,7 @@ namespace DrawMuse
             currentBrush = new SolidColorBrush(color);
             drawingTools.SetBrush(currentBrush);
             shapeTools.SetBrush(currentBrush);
+            colorBucket.UpdateBucketColor(color);
         }
       
     }

@@ -6,6 +6,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:DrawMuse"
         mc:Ignorable="d"
+        KeyDown="Window_KeyDown"
         Title="DrawMuse" Height="1080" Width="1920">
     <Window.Resources>
         <SolidColorBrush x:Key="upperBarColor" Color="#A49191" Opacity="0.16"/>
