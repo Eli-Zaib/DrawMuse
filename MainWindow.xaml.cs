@@ -36,11 +36,15 @@ namespace DrawMuse
         private ColorBucket colorBucket;
         private EraserTool eraserTool;
         private MainUndoRedoManager mainUndoRedoManager;
+        private ScaleTransform canvasScaleTransform= new ScaleTransform();
         private ShapeTools shapeTools;
         private ToolMode currentToolMode = ToolMode.None;
         private bool isColorBucket;
         private bool isEyeDropper;
         private bool isEraserActive;
+        private double zoomFactor = 1.1;
+        private double minZoom = 0.1;
+        private double maxZoom = 5;
         public MainWindow()
         {
             InitializeComponent();
@@ -53,11 +57,58 @@ namespace DrawMuse
             colorManager.CreateColorPalette(ColorPalette);
             colorTools = new ColorTools(drawingTools , EyeDropper);
             eraserTool = new EraserTool(drawingCanvas, mainUndoRedoManager);
+            drawingCanvas.RenderTransform = canvasScaleTransform;
             colorTools.ColorSelected += OnColorSelected;
             SizeAdjuster.ValueChanged += SizeAdjuster_ValueChanged;
 
         }
 
+        private void DrawCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                e.Handled = true;
+
+                double scale = canvasScaleTransform.ScaleX;
+                double oldScale = scale;
+
+                // Zoom in or out
+                if (e.Delta > 0 && scale < maxZoom)
+                {
+                    scale *= zoomFactor;
+                }
+                else if (e.Delta < 0 && scale > minZoom)
+                {
+                    scale /= zoomFactor;
+                }
+
+                // Enforce the minimum and maximum zoom levels
+                if (scale < minZoom)
+                {
+                    scale = minZoom;
+                }
+                else if (scale > maxZoom)
+                {
+                    scale = maxZoom;
+                }
+
+                // Apply the new scale
+                canvasScaleTransform.ScaleX = scale;
+                canvasScaleTransform.ScaleY = scale;
+
+                var position = e.GetPosition(drawingCanvas);
+
+                double deltaX = (position.X - canvasScaleTransform.CenterX) * (scale / oldScale - 1);
+                double deltaY = (position.Y - canvasScaleTransform.CenterY) * (scale / oldScale - 1);
+
+                canvasScaleTransform.CenterX = Clamp(canvasScaleTransform.CenterX - deltaX, 0, drawingCanvas.ActualWidth);
+                canvasScaleTransform.CenterY = Clamp(canvasScaleTransform.CenterY - deltaY, 0, drawingCanvas.ActualHeight);
+            }
+        }
+        private double Clamp(double value, double min, double max)
+        {
+            return Math.Max(min, Math.Min(max, value));
+        }
         private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is ToggleButton checkedButton)
@@ -141,7 +192,6 @@ namespace DrawMuse
             isEraserActive = false;
             isColorBucket = false;
         }
-
         private void SizeAdjuster_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             drawingTools.SetSize(e.NewValue);
