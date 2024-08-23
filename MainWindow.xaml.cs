@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -289,5 +291,60 @@ namespace DrawMuse
                 colorBucket.UpdateBucketColor(selectedColor);
             }
         }
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp",
+                Title = "Save your drawing"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SaveDrawingToFile(saveFileDialog.FileName);
+            }
+        }
+        private void SaveDrawingToFile(string filePath)
+        {
+            int width = (int)drawingCanvas.ActualWidth;
+            int height = (int)drawingCanvas.ActualHeight;
+
+            if (width > 0 && height > 0)
+            {
+                drawingCanvas.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                drawingCanvas.Arrange(new Rect(0, 0, width, height));
+
+                RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Pbgra32);
+                renderTargetBitmap.Render(drawingCanvas);
+
+                BitmapEncoder encoder = null;
+                if (filePath.EndsWith(".png"))
+                {
+                    encoder = new PngBitmapEncoder();
+                }
+                else if (filePath.EndsWith(".jpg"))
+                {
+                    encoder = new JpegBitmapEncoder();
+                }
+                else if (filePath.EndsWith(".bmp"))
+                {
+                    encoder = new BmpBitmapEncoder();
+                }
+
+                if (encoder != null)
+                {
+                    encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        encoder.Save(fileStream);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Canvas size is too small to save.");
+            }
+        }
+
     }
 }

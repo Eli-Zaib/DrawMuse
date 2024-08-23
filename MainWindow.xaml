@@ -25,13 +25,13 @@
         <UniformGrid  Name="ColorPalette" Columns="3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,250" >
         </UniformGrid>
 
-        <ToggleButton x:Name="drawButton" Width="35" Height="36" Margin="0,0,1820,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+        <ToggleButton x:Name="drawButton" Width="35" Height="36" Margin="0,0,1720,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
                       Background="Transparent" BorderBrush="Transparent"
                       Tag="{x:Static local:ToolMode.Pencil}">
             <Image Source="Icons/paint-brush.png" Width="32" Height="32"/>
         </ToggleButton>
 
-        <ToggleButton x:Name="EraserButton" Width="35" Height="36" Margin="0,0,1720,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked" 
+        <ToggleButton x:Name="EraserButton" Width="35" Height="36" Margin="0,0,1620,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked" 
                       Background="Transparent" BorderBrush="Transparent"
                       Tag="{x:Static local:ToolMode.Eraser}">
             <Image Source="Icons/eraser.png" Width="32" Height="32" />
@@ -50,23 +50,23 @@
                           SelectedColorChanged="ColorPickerControl_SelectedColorChanged"
                           Margin="0,0,1620,960" Width="35" Height="36" Visibility="Hidden"/>
 
-        <Button x:Name="colorPickerButton" Click="ColorPickerButton_Click" Width="35" Height="36" Margin="0,0,1620,960" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="colorPickerButton" Click="ColorPickerButton_Click" Width="35" Height="36" Margin="0,0,1520,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/palette.png" Width="32" Height="32" />
         </Button>
 
-        <ToggleButton x:Name="ColorBucket" Width="35" Height="36" Margin="0,0,1520,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+        <ToggleButton x:Name="ColorBucket" Width="35" Height="36" Margin="0,0,1420,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
                 Background="Transparent" BorderBrush="Transparent"
                       Tag="{x:Static local:ToolMode.ColorBucket}">
             <Image Source="Icons/fill.png" Width="32" Height="32" />
         </ToggleButton>
 
-        <ToggleButton Name="EyeDropper" Width="35" Height="36" Margin="0,0,1420,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
+        <ToggleButton Name="EyeDropper" Width="35" Height="36" Margin="0,0,1320,960" Checked="ToggleButton_Checked" Unchecked="ToggleButton_Unchecked"
                       Background="Transparent" BorderBrush="Transparent"
                       Tag="{x:Static local:ToolMode.EyeDropperColorPicker}">
             <Image Source="Icons/eye-dropper.png" Width="32" Height="32" />
         </ToggleButton>
 
-        <Button x:Name="SetCanvasSize" Width="35" Click="SetCanvasSize_Click" Height="36" Margin="0,0,1320,960" Background="Transparent" BorderBrush="Transparent">
+        <Button x:Name="SetCanvasSize" Width="35" Click="SetCanvasSize_Click" Height="36" Margin="0,0,1220,960" Background="Transparent" BorderBrush="Transparent">
             <Image Source="Icons/canvas.png"/>
         </Button>
 
@@ -96,8 +96,11 @@
             <Image Source="Icons/slash.png" Width="32" Height="32" />
         </ToggleButton>
 
-        <Slider x:Name="SizeAdjuster" Minimum="1" Maximum="50" Value="5" TickFrequency="1" Width="100" Height="20" Margin="0,0,1100,960"/>
-        <TextBlock Text="{Binding ElementName=SizeAdjuster, Path=Value}" Width="25" Height="25" Margin="0,0,960,955"/>
+        <Slider x:Name="SizeAdjuster" Minimum="1" Maximum="50" Value="5" TickFrequency="1" Width="100" Height="20" Margin="0,0,1000,960"/>
+        <TextBlock Text="{Binding ElementName=SizeAdjuster, Path=Value}" Width="25" Height="25" Margin="0,0,860,955"/>
 
+        <Button x:Name="SaveFile" Width="35" Height="36" Click="SaveButton_Click" Margin="0,0,1820,960" Background="Transparent" BorderBrush="Transparent">
+            <Image Source="Icons/SaveFile.png"/>
+        </Button>
     </Grid>
 </Window>
