@@ -6,3 +6,16 @@
 - C#
 - WPF (Windows Presentation Foundation)
 - XAML
+
+## Installation
+1. Clone the repository: `git clone https://github.com/Eli-Zaib/DrawMuse.git`
+2. Open the solution in Visual Studio.
+3. Build and run the project.
+
+## Features
+- **Multiple Drawing Tools:** Pencil, Brush, Eraser, Shapes, and more.
+- **Color Palette:** Customizable colors with a color picker and preset palettes.
+- **Undo/Redo:** Supports full undo and redo of all actions.
+- **File Management:** Save your artwork in various formats.
+- **Bucket Fill Tool:** fill based on canvas areas.
+- **Eyedropper Tool:** Pick colors directly from the canvas.
