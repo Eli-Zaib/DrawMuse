@@ -13,7 +13,7 @@
 3. Build and run the project.
 
 ## Features
-- **Multiple Drawing Tools:** Pencil, Brush, Eraser, Shapes, and more.
+- **Multiple Drawing Tools:** Pencil, Eraser, Shapes, and more.
 - **Color Palette:** Customizable colors with a color picker and preset palettes.
 - **Undo/Redo:** Supports full undo and redo of all actions.
 - **File Management:** Save your artwork in various formats.
