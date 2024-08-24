@@ -12,7 +12,7 @@
 2. Open the solution in Visual Studio.
 3. Build and run the project.
 
-![Interface1](Images/Interface1.png)
+![Interface1](Images/Interface1.PNG)
 
 ## Features
 - **Multiple Drawing Tools:** Pencil, Eraser, Shapes, and more.
@@ -22,4 +22,4 @@
 - **Bucket Fill Tool:** fill based on canvas areas.
 - **Eyedropper Tool:** Pick colors directly from the canvas.
 
-![Interface2](Images/Interface2.png)
+![Interface2](Images/Interface2.PNG)
