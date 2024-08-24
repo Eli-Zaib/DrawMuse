@@ -12,6 +12,8 @@
 2. Open the solution in Visual Studio.
 3. Build and run the project.
 
+![Interface 1](Images/Interface1.png)
+
 ## Features
 - **Multiple Drawing Tools:** Pencil, Eraser, Shapes, and more.
 - **Color Palette:** Customizable colors with a color picker and preset palettes.
@@ -19,3 +21,5 @@
 - **File Management:** Save your artwork in various formats.
 - **Bucket Fill Tool:** fill based on canvas areas.
 - **Eyedropper Tool:** Pick colors directly from the canvas.
+
+![Interface 2](Images/Interface2.png)
